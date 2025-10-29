@@ -131,13 +131,13 @@ public class DataEnrichmentAutoConfiguration {
         name = "cache-enabled",
         havingValue = "true"
     )
-    @ConditionalOnBean(CacheAdapter.class)
+    @ConditionalOnBean(com.firefly.common.cache.manager.FireflyCacheManager.class)
     public EnrichmentCacheService enrichmentCacheService(
-            CacheAdapter cacheAdapter,
+            com.firefly.common.cache.manager.FireflyCacheManager cacheManager,
             EnrichmentCacheKeyGenerator keyGenerator,
             DataEnrichmentProperties properties) {
-        log.info("Creating EnrichmentCacheService bean with cache type: {}", cacheAdapter.getCacheType());
-        return new EnrichmentCacheService(cacheAdapter, keyGenerator, properties);
+        log.info("Creating EnrichmentCacheService bean with cache type: {}", cacheManager.getCacheType());
+        return new EnrichmentCacheService(cacheManager, keyGenerator, properties);
     }
 
     /**
@@ -158,12 +158,12 @@ public class DataEnrichmentAutoConfiguration {
         havingValue = "true",
         matchIfMissing = true
     )
-    @ConditionalOnBean(CacheAdapter.class)
+    @ConditionalOnBean(com.firefly.common.cache.manager.FireflyCacheManager.class)
     public OperationCacheService operationCacheService(
-            CacheAdapter cacheAdapter,
+            com.firefly.common.cache.manager.FireflyCacheManager cacheManager,
             ObjectMapper objectMapper,
             DataEnrichmentProperties properties) {
-        log.info("Creating OperationCacheService bean with cache type: {}", cacheAdapter.getCacheType());
-        return new OperationCacheService(cacheAdapter, objectMapper, properties);
+        log.info("Creating OperationCacheService bean with cache type: {}", cacheManager.getCacheType());
+        return new OperationCacheService(cacheManager, objectMapper, properties);
     }
 }
