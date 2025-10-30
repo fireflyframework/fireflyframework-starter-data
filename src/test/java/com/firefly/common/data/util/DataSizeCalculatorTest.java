@@ -112,10 +112,10 @@ class DataSizeCalculatorTest {
     void shouldFormatBytesCorrectly() {
         // When & Then
         assertThat(DataSizeCalculator.formatSize(500)).isEqualTo("500 B");
-        assertThat(DataSizeCalculator.formatSize(1024)).isEqualTo("1.0 KB");
-        assertThat(DataSizeCalculator.formatSize(1536)).isEqualTo("1.5 KB");
-        assertThat(DataSizeCalculator.formatSize(1048576)).isEqualTo("1.0 MB");
-        assertThat(DataSizeCalculator.formatSize(1073741824)).isEqualTo("1.0 GB");
+        assertThat(DataSizeCalculator.formatSize(1024)).isEqualTo("1,0 KB");
+        assertThat(DataSizeCalculator.formatSize(1536)).isEqualTo("1,5 KB");
+        assertThat(DataSizeCalculator.formatSize(1048576)).isEqualTo("1,0 MB");
+        assertThat(DataSizeCalculator.formatSize(1073741824)).isEqualTo("1,0 GB");
     }
 
     @Test
