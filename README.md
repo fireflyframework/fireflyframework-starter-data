@@ -144,10 +144,10 @@ Consistent API contracts across all core-data microservices
 ### 📊 Observability & Monitoring
 
 - **Distributed Tracing** - Micrometer Observation integration for end-to-end tracing
-  - ✅ **Real Trace ID Extraction** - Extracts actual trace IDs from Brave/OpenTelemetry (not generated timestamps)
+  - ✅ **Real Trace ID Extraction** - Extracts actual trace IDs from OpenTelemetry (not generated timestamps)
   - ✅ **Real Span ID Extraction** - Extracts actual span IDs from current observation
   - ✅ **Automatic Configuration** - Tracer automatically injected via Spring Boot
-  - ✅ **Full Correlation** - Works with Zipkin, Jaeger, and other distributed tracing systems
+  - ✅ **Full Correlation** - Works with Jaeger, Grafana Tempo, and other OpenTelemetry-compatible systems
 - **Metrics Collection** - Comprehensive metrics for job execution, errors, and performance
   - ✅ **Precise Data Size Calculation** - Actual byte size via JSON serialization (not toString() estimation)
   - ✅ **Human-Readable Formatting** - Automatic conversion to KB, MB, GB

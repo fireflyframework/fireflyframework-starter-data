@@ -63,11 +63,11 @@ These topics are relevant whether you're building data jobs, data enrichers, or 
 ### Observability
 
 **[Observability Guide](observability.md)** - Monitoring and tracing
-- Distributed tracing with Micrometer
+- Distributed tracing with Micrometer and OpenTelemetry
 - Metrics collection
 - Health checks
 - Custom metrics
-- Integration with monitoring systems (Prometheus, Grafana, Zipkin, Jaeger)
+- Integration with monitoring systems (Prometheus, Grafana, Jaeger, Grafana Tempo)
 
 **Topics covered**:
 - ✅ Automatic tracing for all operations

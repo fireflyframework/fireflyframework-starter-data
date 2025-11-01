@@ -128,7 +128,7 @@ Add the following to your `pom.xml`:
 ## ✨ Key Features
 
 ### Automatic Observability
-- ✅ **Distributed Tracing** - Micrometer integration with Zipkin/Jaeger
+- ✅ **Distributed Tracing** - Micrometer integration with OpenTelemetry
 - ✅ **Metrics Collection** - Automatic metrics for all operations
 - ✅ **Health Checks** - Ready-to-use health check endpoints
 - ✅ **Comprehensive Logging** - Structured JSON logging

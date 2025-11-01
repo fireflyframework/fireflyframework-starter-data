@@ -1716,7 +1716,7 @@ Response
 - ✅ Trace ID and Span ID for every request
 - ✅ Parent-child span relationships
 - ✅ Trace context propagation across services
-- ✅ Integration with Zipkin, Jaeger, etc.
+- ✅ Integration with Jaeger, Grafana Tempo, and other OpenTelemetry-compatible systems
 
 **Example Trace**:
 ```
@@ -2092,7 +2092,7 @@ See the test sources in this repository for working examples:
 | **Orchestrator timeouts** | Orchestrator slow or unreachable | Adjust `firefly.data.orchestration.default-timeout`. Verify orchestrator connectivity and credentials. |
 | **Circuit breaker always open** | Too many failures | Check `circuit-breaker-failure-rate-threshold`. Verify orchestrator health. Review error logs. |
 | **Missing metrics** | Micrometer not configured | Add `spring-boot-starter-actuator` dependency. Enable metrics in `application.yml`. |
-| **Missing traces** | Tracing not configured | Add Micrometer Tracing dependencies. Configure trace exporter (Zipkin, Jaeger). |
+| **Missing traces** | Tracing not configured | Add Micrometer Tracing dependencies. Configure OpenTelemetry exporter (OTLP). |
 | **Job events not published** | Events disabled | Set `firefly.data.orchestration.publish-job-events: true`. Verify event publisher bean exists. |
 | **Audit data not persisted** | Persistence disabled | Set `firefly.data.orchestration.persistence.audit-enabled: true`. Verify database configuration. |
 | **Results not cached** | Caching disabled | Set `firefly.data.orchestration.persistence.enable-result-caching: true`. |

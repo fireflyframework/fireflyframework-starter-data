@@ -111,11 +111,10 @@ The library now includes **effective tracing context extraction** using the `Tra
 
 - ✅ **Real Trace IDs** - Extracted from Micrometer Tracing (not generated timestamps)
 - ✅ **Real Span IDs** - Extracted from current observation span
-- ✅ **Brave Support** - Full support for Brave tracing backend (Zipkin)
-- ✅ **OpenTelemetry Ready** - Prepared for OpenTelemetry backend
+- ✅ **OpenTelemetry Support** - Full support for OpenTelemetry tracing backend
 - ✅ **Automatic Configuration** - Tracer is automatically injected via Spring Boot
 - ✅ **Multiple Extraction Strategies** - Tries tracer first, then observation context
-- ✅ **Distributed Tracing** - Full correlation with Zipkin, Jaeger, and other tracing systems
+- ✅ **Distributed Tracing** - Full correlation with Jaeger, Grafana Tempo, and other OpenTelemetry-compatible systems
 
 #### How It Works
 
@@ -173,10 +172,10 @@ traceId: trace-1760466188449986
 spanId: span-1760466188449986
 ```
 
-**After (Real Brave Tracing):**
+**After (Real OpenTelemetry Tracing):**
 ```
-traceId: 59e63de2fc596870  (16-character hex from Brave)
-spanId: 59e63de2fc596870   (16-character hex from Brave)
+traceId: 4bf92f3577b34da6a3ce929d0e0e4736  (32-character hex from OpenTelemetry)
+spanId: 00f067aa0ba902b7   (16-character hex from OpenTelemetry)
 ```
 
 #### Manual Usage
@@ -199,8 +198,7 @@ boolean hasContext = TracingContextExtractor.hasTracingContext(observation);
 
 | Backend | Status | Notes |
 |---------|--------|-------|
-| **Brave** (Zipkin) | ✅ Fully Supported | Default implementation, tested |
-| **OpenTelemetry** | 🔄 Prepared | Requires `micrometer-tracing-bridge-otel` dependency |
+| **OpenTelemetry** | ✅ Fully Supported | Default implementation, tested |
 | **Generic Micrometer** | ✅ Fallback | Uses generic `TraceContext` interface |
   - `orchestrator.type`: Type of orchestrator (AWS_STEP_FUNCTIONS, etc.)
 - **High Cardinality Tags**:

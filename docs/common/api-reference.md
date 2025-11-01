@@ -1447,7 +1447,7 @@ Utility class for extracting trace IDs and span IDs from Micrometer Observation.
 
 **Features:**
 - ✅ Real trace ID and span ID extraction from Micrometer Tracing
-- ✅ Support for Brave (Zipkin) and OpenTelemetry backends
+- ✅ Support for OpenTelemetry backend
 - ✅ Multiple extraction strategies with fallbacks
 - ✅ Automatic configuration via Spring Boot
 
@@ -1478,13 +1478,13 @@ Extracts the trace ID from the current observation.
 - `observation` - The Micrometer Observation
 
 **Returns:**
-- `String` - The trace ID (16-character hex for Brave), or `null` if not available
+- `String` - The trace ID (32-character hex for OpenTelemetry), or `null` if not available
 
 **Example:**
 ```java
 Observation observation = observationRegistry.getCurrentObservation();
 String traceId = TracingContextExtractor.extractTraceId(observation);
-// traceId = "59e63de2fc596870"
+// traceId = "4bf92f3577b34da6a3ce929d0e0e4736"
 ```
 
 ##### extractSpanId
@@ -1499,7 +1499,7 @@ Extracts the span ID from the current observation.
 - `observation` - The Micrometer Observation
 
 **Returns:**
-- `String` - The span ID (16-character hex for Brave), or `null` if not available
+- `String` - The span ID (16-character hex for OpenTelemetry), or `null` if not available
 
 **Example:**
 ```java
