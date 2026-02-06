@@ -189,13 +189,13 @@ Configure logging levels in `logback-spring.xml`:
     </appender>
     
     <!-- Logger for service layer -->
-    <logger name="com.firefly.common.data.service" level="INFO" additivity="false">
+    <logger name="org.fireflyframework.data.service" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="JOB_FILE"/>
     </logger>
     
     <!-- Logger for controller layer -->
-    <logger name="com.firefly.common.data.controller" level="INFO" additivity="false">
+    <logger name="org.fireflyframework.data.controller" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="JOB_FILE"/>
     </logger>
@@ -215,16 +215,16 @@ Configure logging levels in `application.yml`:
 logging:
   level:
     # Service layer - INFO for production, DEBUG for development
-    com.firefly.common.data.service: INFO
+    org.fireflyframework.data.service: INFO
     
     # Controller layer - INFO for production, DEBUG for development
-    com.firefly.common.data.controller: INFO
+    org.fireflyframework.data.controller: INFO
     
     # Observability components
-    com.firefly.common.data.observability: INFO
+    org.fireflyframework.data.observability: INFO
     
     # Resiliency components
-    com.firefly.common.data.resiliency: INFO
+    org.fireflyframework.data.resiliency: INFO
     
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"

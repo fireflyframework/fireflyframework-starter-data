@@ -29,7 +29,7 @@ A powerful Spring Boot library that enables standardized data processing archite
 
 ## Overview
 
-The `lib-common-data` library provides a unified approach to building data processing microservices within the Firefly ecosystem. It offers two main capabilities:
+The `fireflyframework-data` library provides a unified approach to building data processing microservices within the Firefly ecosystem. It offers two main capabilities:
 
 ### 🔧 1. Data Jobs - Orchestrated Workflows
 
@@ -70,8 +70,8 @@ The `lib-common-data` library provides a unified approach to building data proce
 
 ### 🎯 Additional Capabilities
 
-- **Event-Driven Architecture**: Seamless integration with `lib-common-eda`
-- **CQRS Support**: Built-in CQRS pattern integration via `lib-common-cqrs`
+- **Event-Driven Architecture**: Seamless integration with `fireflyframework-eda`
+- **CQRS Support**: Built-in CQRS pattern integration via `fireflyframework-cqrs`
 - **Transactional Workflows**: Full SAGA support through `lib-transactional-engine`
 
 ### Why Use This Library?
@@ -286,7 +286,7 @@ public class CreditBureauEnricher extends DataEnricher<...> {
 
 #### Integration & Observability
 
-- **ServiceClient Integration** - Use REST, SOAP, or gRPC clients from `lib-common-client`
+- **ServiceClient Integration** - Use REST, SOAP, or gRPC clients from `fireflyframework-client`
 - **Automatic Observability** - Built-in tracing, metrics, and event publishing for enrichment operations
   - Distributed tracing with trace/span IDs
   - Metrics for success/failure rates, duration, data size
@@ -332,8 +332,8 @@ Add the following dependency to your `pom.xml`:
 
 ```xml
 <dependency>
-    <groupId>com.firefly</groupId>
-    <artifactId>lib-common-data</artifactId>
+    <groupId>org.fireflyframework</groupId>
+    <artifactId>fireflyframework-data</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
@@ -619,7 +619,7 @@ public class MyDataJobController implements DataJobController {
 
 ### 4. Job Auto-Discovery
 
-When your application starts, `lib-common-data` automatically discovers and logs all registered DataJobs:
+When your application starts, `fireflyframework-data` automatically discovers and logs all registered DataJobs:
 
 ```
 ================================================================================
@@ -793,7 +793,7 @@ public class FinancialDataEnricher
             @Value("${financial-data.api-key}") String apiKey) {
         super(tracingService, metricsService, resiliencyService, eventPublisher, CompanyProfileDTO.class);
 
-        // Create REST client using lib-common-client
+        // Create REST client using fireflyframework-client
         this.financialDataClient = ServiceClient.rest("financial-data-provider")
             .baseUrl(baseUrl)
             .defaultHeader("Authorization", "Bearer " + apiKey)
@@ -1125,14 +1125,14 @@ The library uses the port/adapter (hexagonal) architecture:
 ### Integration with Other Libraries
 
 ```
-lib-common-data
-├── lib-common-eda (Event-Driven Architecture)
+fireflyframework-data
+├── fireflyframework-eda (Event-Driven Architecture)
 │   └── Multi-platform event publishing (Kafka, RabbitMQ, SQS, etc.)
-├── lib-common-cqrs (Command/Query Separation)
+├── fireflyframework-cqrs (Command/Query Separation)
 │   └── Scalable read/write models
 └── lib-transactional-engine (SAGA Support)
     ├── Distributed transaction coordination
-    └── StepEventPublisherBridge → publishes to lib-common-eda
+    └── StepEventPublisherBridge → publishes to fireflyframework-eda
 ```
 
 **Key Integration Points:**
@@ -1450,7 +1450,7 @@ When step events are published, they include comprehensive metadata:
 - `step.completed_at` - Completion timestamp
 - `step.result_type` - Result status
 - `context` - Always set to "data-processing"
-- `library` - Always set to "lib-common-data"
+- `library` - Always set to "fireflyframework-data"
 - `routing_key` - For message partitioning (format: `{sagaName}:{sagaId}`)
 
 ### Data Enrichment Configuration
@@ -1465,7 +1465,7 @@ firefly:
       # Event publishing for enrichment lifecycle events
       publish-events: true
 
-      # Caching configuration (requires lib-common-cache)
+      # Caching configuration (requires fireflyframework-cache)
       cache-enabled: true                # Enable caching (default: false)
       cache-ttl-seconds: 3600            # Cache TTL in seconds (default: 3600 = 1 hour)
 
@@ -1513,7 +1513,7 @@ firefly:
 
 - `enabled` - Enable/disable the data enrichment feature (default: `true`)
 - `publish-events` - Publish enrichment lifecycle events to EDA (default: `true`)
-- `cache-enabled` - Enable caching of enrichment results with tenant isolation (default: `false`, requires `lib-common-cache`)
+- `cache-enabled` - Enable caching of enrichment results with tenant isolation (default: `false`, requires `fireflyframework-cache`)
 - `cache-ttl-seconds` - Cache time-to-live in seconds (default: `3600`)
 - `max-batch-size` - Maximum number of requests per batch (default: `100`)
 - `batch-parallelism` - Number of parallel requests in batch processing (default: `10`)
@@ -1844,7 +1844,7 @@ For detailed documentation, see the [`docs/`](docs/) directory:
 
 #### Data Enrichers
 - **[Step-by-Step Guide: Data Enricher Microservice](docs/data-enrichers/enricher-microservice-guide.md)** - ⭐ **Complete guide to building a data enricher microservice**
-  - Multi-module Maven project structure with Firefly's lib-parent-pom
+  - Multi-module Maven project structure with Firefly's fireflyframework-parent
   - Domain, Client, Enricher, and Application modules
   - Building enrichers WITHOUT custom operations
   - Building enrichers WITH custom operations
@@ -1891,14 +1891,14 @@ For detailed documentation, see the [`docs/`](docs/) directory:
 
 We welcome contributions! Please follow these guidelines:
 
-1. Follow the coding standards established in `lib-common-domain` and `lib-common-core`
+1. Follow the coding standards established in `fireflyframework-domain` and `fireflyframework-core`
 2. Write tests for new features
 3. Update documentation for any API changes
 4. Ensure all tests pass before submitting a PR
 
 ## License
 
-Copyright 2025 Firefly Software Solutions Inc.
+Copyright 2024-2026 Firefly Software Solutions Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

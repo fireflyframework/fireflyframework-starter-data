@@ -1,6 +1,6 @@
 # Observability
 
-This document describes the observability features in lib-common-data, including distributed tracing, metrics collection, and health checks.
+This document describes the observability features in fireflyframework-data, including distributed tracing, metrics collection, and health checks.
 
 ## Table of Contents
 
@@ -183,7 +183,7 @@ spanId: 00f067aa0ba902b7   (16-character hex from OpenTelemetry)
 You can also use the `TracingContextExtractor` directly in your code:
 
 ```java
-import com.firefly.common.data.util.TracingContextExtractor;
+import org.fireflyframework.data.util.TracingContextExtractor;
 
 // Extract from current observation
 Observation observation = observationRegistry.getCurrentObservation();

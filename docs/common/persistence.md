@@ -1,6 +1,6 @@
 # Persistence & Audit Trail
 
-This document describes the persistence features in lib-common-data, including audit trail and execution result storage using hexagonal architecture with R2DBC.
+This document describes the persistence features in fireflyframework-data, including audit trail and execution result storage using hexagonal architecture with R2DBC.
 
 ## Table of Contents
 
@@ -35,7 +35,7 @@ Key features:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    lib-common-data (Core)                   │
+│                    fireflyframework-data (Core)                   │
 │                                                             │
 │  ┌──────────────────────────────────────────────────────┐   │
 │  │              Domain Models                           │   │

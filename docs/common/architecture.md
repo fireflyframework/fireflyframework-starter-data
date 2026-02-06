@@ -1,6 +1,6 @@
 # Architecture
 
-This document provides a comprehensive overview of the `lib-common-data` architecture, design patterns, and integration points.
+This document provides a comprehensive overview of the `fireflyframework-data` architecture, design patterns, and integration points.
 
 ## Table of Contents
 
@@ -16,7 +16,7 @@ This document provides a comprehensive overview of the `lib-common-data` archite
 
 ## Overview
 
-The `lib-common-data` library is built on **Hexagonal Architecture** (also known as Ports and Adapters pattern), which provides:
+The `fireflyframework-data` library is built on **Hexagonal Architecture** (also known as Ports and Adapters pattern), which provides:
 
 - **Clean separation** between business logic and infrastructure
 - **Pluggable adapters** for different orchestration platforms
@@ -73,7 +73,7 @@ The `lib-common-data` library is built on **Hexagonal Architecture** (also known
 │  │                                                    │         │
 │  └────────────────────────────────────────────────────┘         │
 │                                                                 │
-│                    lib-common-data                              │
+│                    fireflyframework-data                              │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -282,11 +282,11 @@ stepevents/
 
 ## Integration Architecture
 
-### Integration with lib-common-eda
+### Integration with fireflyframework-eda
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                  lib-common-data                        │
+│                  fireflyframework-data                        │
 │                                                         │
 │  ┌────────────────────────────────────────────┐         │
 │  │  Job Events                                │         │
@@ -304,7 +304,7 @@ stepevents/
                 │
                 ▼
 ┌─────────────────────────────────────────────────────────┐
-│              lib-common-eda                             │
+│              fireflyframework-eda                             │
 │                                                         │
 │  ┌────────────────────────────────────────────┐         │
 │  │  EventPublisher                            │         │
@@ -329,11 +329,11 @@ stepevents/
 - Configurable topics and routing
 - Automatic metadata enrichment
 
-### Integration with lib-common-cqrs
+### Integration with fireflyframework-cqrs
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│              lib-common-data                            │
+│              fireflyframework-data                            │
 │                                                         │
 │  ┌────────────────────────────────────────────┐         │
 │  │  DataJobService                            │         │
@@ -344,7 +344,7 @@ stepevents/
                 │
                 ▼
 ┌─────────────────────────────────────────────────────────┐
-│              lib-common-cqrs                            │
+│              fireflyframework-cqrs                            │
 │                                                         │
 │  ┌────────────────────┐  ┌────────────────────┐         │
 │  │  CommandHandler    │  │  QueryHandler      │         │
@@ -381,7 +381,7 @@ stepevents/
                 │
                 ▼
 ┌─────────────────────────────────────────────────────────┐
-│              lib-common-data                            │
+│              fireflyframework-data                            │
 │                                                         │
 │  ┌────────────────────────────────────────────┐         │
 │  │  StepEventPublisherBridge                  │         │
@@ -392,7 +392,7 @@ stepevents/
 └───────────────┼─────────────────────────────────────────┘
                 │
                 ▼
-         (to lib-common-eda)
+         (to fireflyframework-eda)
 ```
 
 ---
@@ -582,7 +582,7 @@ Client          Controller      Service         Orchestrator    Mapper          
 
 ## Summary
 
-The `lib-common-data` architecture provides:
+The `fireflyframework-data` architecture provides:
 
 ✅ **Clean Architecture** - Hexagonal design with clear boundaries
 ✅ **Flexibility** - Pluggable adapters for different platforms

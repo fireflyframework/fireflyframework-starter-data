@@ -1,6 +1,6 @@
 # Configuration Reference
 
-Complete configuration reference for `lib-common-data` library.
+Complete configuration reference for `fireflyframework-data` library.
 
 ## Table of Contents
 
@@ -17,7 +17,7 @@ Complete configuration reference for `lib-common-data` library.
 
 ## Overview
 
-The `lib-common-data` library uses Spring Boot's configuration mechanism with sensible defaults. All configuration is under the `firefly` namespace.
+The `fireflyframework-data` library uses Spring Boot's configuration mechanism with sensible defaults. All configuration is under the `firefly` namespace.
 
 ### Configuration Hierarchy
 
@@ -29,7 +29,7 @@ firefly:
     orchestration:         # Job orchestration settings
     transactional:         # SAGA/transactional settings
   stepevents:              # Step event bridge settings
-  eda:                     # lib-common-eda configuration
+  eda:                     # fireflyframework-eda configuration
 ```
 
 ---
@@ -180,9 +180,9 @@ firefly:
       enabled: true
 ```
 
-### lib-common-eda Configuration
+### fireflyframework-eda Configuration
 
-The library integrates with `lib-common-eda`. Configure publishers and connections:
+The library integrates with `fireflyframework-eda`. Configure publishers and connections:
 
 ```yaml
 firefly:
@@ -320,7 +320,7 @@ Headers:
   step.completed_at: "2025-01-15T10:30:01.5Z"
   step.result_type: "SUCCESS"
   context: "data-processing"
-  library: "lib-common-data"
+  library: "fireflyframework-data"
   routing_key: "data-processing-saga:saga-123"
 ```
 
@@ -363,7 +363,7 @@ firefly:
 
 logging:
   level:
-    com.firefly: DEBUG
+    org.fireflyframework: DEBUG
 ```
 
 ### Production Environment (Apache Airflow)
@@ -422,7 +422,7 @@ firefly:
 
 logging:
   level:
-    com.firefly: INFO
+    org.fireflyframework: INFO
     reactor: WARN
 ```
 
@@ -480,7 +480,7 @@ firefly:
 
 logging:
   level:
-    com.firefly: DEBUG
+    org.fireflyframework: DEBUG
 ```
 
 ---
@@ -608,7 +608,7 @@ Enable debug logging:
 ```yaml
 logging:
   level:
-    com.firefly.common.data.config: DEBUG
+    org.fireflyframework.data.config: DEBUG
     org.springframework.boot.autoconfigure: DEBUG
 ```
 

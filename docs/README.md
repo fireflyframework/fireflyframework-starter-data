@@ -1,10 +1,10 @@
-# lib-common-data Documentation
+# fireflyframework-data Documentation
 
-Welcome to the **lib-common-data** library documentation! This library provides a standardized, production-ready foundation for building data processing microservices in the Firefly ecosystem.
+Welcome to the **fireflyframework-data** library documentation! This library provides a standardized, production-ready foundation for building data processing microservices in the Firefly ecosystem.
 
-## 📖 What is lib-common-data?
+## 📖 What is fireflyframework-data?
 
-`lib-common-data` is a Spring Boot library that provides two main capabilities:
+`fireflyframework-data` is a Spring Boot library that provides two main capabilities:
 
 ### 1. **Data Jobs** - Orchestrated Workflows
 For executing complex, multi-step workflows that interact with external systems (databases, APIs, file systems, etc.).
@@ -100,8 +100,8 @@ Add the following to your `pom.xml`:
 ```xml
 <!-- Use Firefly's parent POM for standardized dependency management -->
 <parent>
-    <groupId>com.firefly</groupId>
-    <artifactId>lib-parent-pom</artifactId>
+    <groupId>org.fireflyframework</groupId>
+    <artifactId>fireflyframework-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <relativePath/>
 </parent>
@@ -109,8 +109,8 @@ Add the following to your `pom.xml`:
 <dependencies>
     <!-- Firefly Common Data Library -->
     <dependency>
-        <groupId>com.firefly</groupId>
-        <artifactId>lib-common-data</artifactId>
+        <groupId>org.fireflyframework</groupId>
+        <artifactId>fireflyframework-data</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </dependency>
 </dependencies>
@@ -168,7 +168,7 @@ The library follows **Hexagonal Architecture** (Ports and Adapters):
 │  └──────────────┘              └──────────────┘        │
 │         ↓                              ↓               │
 │  ┌──────────────────────────────────────────────┐      │
-│  │         lib-common-data (Core)               │      │
+│  │         fireflyframework-data (Core)               │      │
 │  │                                              │      │
 │  │  - Abstract base classes                     │      │
 │  │  - Observability (automatic)                 │      │

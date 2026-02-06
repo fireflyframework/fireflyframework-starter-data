@@ -1,8 +1,8 @@
 # Examples
 
-Real-world usage examples for `lib-common-data`.
+Real-world usage examples for `fireflyframework-data`.
 
-> **Note**: These examples demonstrate usage patterns and integration scenarios. Some examples reference external services (cache, database, SAGA orchestrator) that are not part of this library but show how to integrate lib-common-data with other components in your application.
+> **Note**: These examples demonstrate usage patterns and integration scenarios. Some examples reference external services (cache, database, SAGA orchestrator) that are not part of this library but show how to integrate fireflyframework-data with other components in your application.
 
 ## Table of Contents
 
@@ -46,7 +46,7 @@ public class CustomerDTO {
 package com.example.mapper;
 
 import com.example.dto.CustomerDTO;
-import com.firefly.common.data.mapper.JobResultMapper;
+import org.fireflyframework.data.mapper.JobResultMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -76,8 +76,8 @@ public interface CustomerDataMapper extends JobResultMapper<Map<String, Object>,
 package com.example.service;
 
 import com.example.dto.CustomerDTO;
-import com.firefly.common.data.model.*;
-import com.firefly.common.data.service.DataJobService;
+import org.fireflyframework.data.model.*;
+import org.fireflyframework.data.service.DataJobService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -367,7 +367,7 @@ public class FallbackDataService {
 
 ## Event-Driven Workflows
 
-> **Note**: These examples show integration with event publishing. The `EventPublisher` would be from `lib-common-eda` or your own event publishing implementation.
+> **Note**: These examples show integration with event publishing. The `EventPublisher` would be from `fireflyframework-eda` or your own event publishing implementation.
 
 ### Example 6: Event-Driven Job Processing
 
@@ -377,7 +377,7 @@ public class FallbackDataService {
 public class EventDrivenJobService {
 
     private final DataJobService dataJobService;
-    // EventPublisher is from lib-common-eda
+    // EventPublisher is from fireflyframework-eda
     private final EventPublisher eventPublisher;
 
     public Mono<Void> processCustomerDataAsync(String customerId) {
@@ -492,7 +492,7 @@ public class CustomerDataEventListener {
 
 ## SAGA Integration
 
-> **Note**: This example demonstrates integration with `lib-transactional-engine` (SAGA orchestrator). The `SagaOrchestrator`, `Saga`, and `Step` classes are from that library, not from lib-common-data. This library provides `StepEventPublisherBridge` to publish step events to the SAGA engine.
+> **Note**: This example demonstrates integration with `lib-transactional-engine` (SAGA orchestrator). The `SagaOrchestrator`, `Saga`, and `Step` classes are from that library, not from fireflyframework-data. This library provides `StepEventPublisherBridge` to publish step events to the SAGA engine.
 
 ### Example 8: Multi-Step Data Processing SAGA
 

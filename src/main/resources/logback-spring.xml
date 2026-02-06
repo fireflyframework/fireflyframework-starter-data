@@ -36,9 +36,9 @@
     </root>
 
     <!-- Application Loggers -->
-    <logger name="com.firefly.common.webhooks" level="DEBUG" />
-    <logger name="com.firefly.common.eda" level="DEBUG" />
-    <logger name="com.firefly.common.cache" level="INFO" />
+    <logger name="org.fireflyframework.webhooks" level="DEBUG" />
+    <logger name="org.fireflyframework.eda" level="DEBUG" />
+    <logger name="org.fireflyframework.cache" level="INFO" />
 
     <!-- Resilience4j Loggers -->
     <logger name="io.github.resilience4j" level="INFO" />

@@ -5,17 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.firefly</groupId>
-        <artifactId>lib-parent-pom</artifactId>
+        <groupId>org.fireflyframework</groupId>
+        <artifactId>fireflyframework-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
         <relativePath/>
     </parent>
 
-    <artifactId>lib-common-data</artifactId>
+    <artifactId>fireflyframework-data</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Firefly Common Data Library</name>
+    <name>Firefly Framework - Common Data Library</name>
     <description>A powerful Spring Boot library that enables data processing architecture for core-data microservices with job orchestration support, CQRS, and event-driven architecture capabilities.</description>
 
     <dependencies>
@@ -103,38 +103,38 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
 
-        <!-- lib-common-client for REST/SOAP/gRPC client support -->
+        <!-- fireflyframework-client for REST/SOAP/gRPC client support -->
         <dependency>
-            <groupId>com.firefly</groupId>
-            <artifactId>lib-common-client</artifactId>
+            <groupId>org.fireflyframework</groupId>
+            <artifactId>fireflyframework-client</artifactId>
             <version>${project.version}</version>
         </dependency>
 
-        <!-- lib-common-cqrs for CQRS pattern support -->
+        <!-- fireflyframework-cqrs for CQRS pattern support -->
         <dependency>
-            <groupId>com.firefly</groupId>
-            <artifactId>lib-common-cqrs</artifactId>
+            <groupId>org.fireflyframework</groupId>
+            <artifactId>fireflyframework-cqrs</artifactId>
             <version>${project.version}</version>
         </dependency>
 
-        <!-- lib-common-eda for event-driven architecture support -->
+        <!-- fireflyframework-eda for event-driven architecture support -->
         <dependency>
-            <groupId>com.firefly</groupId>
-            <artifactId>lib-common-eda</artifactId>
+            <groupId>org.fireflyframework</groupId>
+            <artifactId>fireflyframework-eda</artifactId>
             <version>${project.version}</version>
         </dependency>
 
-        <!-- lib-common-cache for caching support -->
+        <!-- fireflyframework-cache for caching support -->
         <dependency>
-            <groupId>com.firefly</groupId>
-            <artifactId>lib-common-cache</artifactId>
+            <groupId>org.fireflyframework</groupId>
+            <artifactId>fireflyframework-cache</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <!-- Transactional Engine -->
         <dependency>
-            <groupId>com.firefly</groupId>
-            <artifactId>lib-transactional-engine</artifactId>
+            <groupId>org.fireflyframework</groupId>
+            <artifactId>fireflyframework-transactional-engine</artifactId>
             <version>${project.version}</version>
             <optional>true</optional>
         </dependency>

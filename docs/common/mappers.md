@@ -1,6 +1,6 @@
 # MapStruct Mappers
 
-Complete guide to result transformation using MapStruct in `lib-common-data`.
+Complete guide to result transformation using MapStruct in `fireflyframework-data`.
 
 ## Table of Contents
 
@@ -16,7 +16,7 @@ Complete guide to result transformation using MapStruct in `lib-common-data`.
 
 ## Overview
 
-The `lib-common-data` library uses **MapStruct** for transforming raw job results into typed DTOs during the **RESULT stage**.
+The `fireflyframework-data` library uses **MapStruct** for transforming raw job results into typed DTOs during the **RESULT stage**.
 
 ### Why MapStruct?
 
@@ -59,7 +59,7 @@ COLLECT Stage                    RESULT Stage
 ### Interface Definition
 
 ```java
-package com.firefly.common.data.mapper;
+package org.fireflyframework.data.mapper;
 
 /**
  * Base interface for job result mappers using MapStruct.
@@ -177,7 +177,7 @@ public class CustomerDTO {
 package com.example.mapper;
 
 import com.example.dto.CustomerDTO;
-import com.firefly.common.data.mapper.JobResultMapper;
+import org.fireflyframework.data.mapper.JobResultMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

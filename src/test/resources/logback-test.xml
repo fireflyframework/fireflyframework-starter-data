@@ -13,38 +13,38 @@
     </root>
 
     <!-- Application loggers - Keep only essential INFO messages -->
-    <logger name="com.firefly.common.webhooks.web.controllers" level="INFO" />
-    <logger name="com.firefly.common.webhooks.core.services" level="INFO" />
+    <logger name="org.fireflyframework.webhooks.web.controllers" level="INFO" />
+    <logger name="org.fireflyframework.webhooks.core.services" level="INFO" />
 
     <!-- Suppress expected error logs in tests (signature validation failures, etc.) -->
-    <logger name="com.firefly.common.webhooks.processor.listener" level="OFF" />
-    <logger name="com.firefly.common.webhooks.integration.services" level="OFF" />
-    <logger name="com.firefly.common.eda.listener" level="OFF" />
+    <logger name="org.fireflyframework.webhooks.processor.listener" level="OFF" />
+    <logger name="org.fireflyframework.webhooks.integration.services" level="OFF" />
+    <logger name="org.fireflyframework.eda.listener" level="OFF" />
 
-    <logger name="com.firefly.common.webhooks" level="WARN" />
-    <logger name="com.firefly.common.eda" level="ERROR" />
-    <logger name="com.firefly.common.cache" level="ERROR" />
-    <logger name="com.firefly.common.eventsourcing" level="ERROR" />
+    <logger name="org.fireflyframework.webhooks" level="WARN" />
+    <logger name="org.fireflyframework.eda" level="ERROR" />
+    <logger name="org.fireflyframework.cache" level="ERROR" />
+    <logger name="org.fireflyframework.eventsourcing" level="ERROR" />
 
-    <!-- lib-common-data loggers -->
+    <!-- fireflyframework-data loggers -->
     <!-- Suppress expected validation errors in tests -->
-    <logger name="com.firefly.common.data.operation.AbstractProviderOperation" level="OFF" />
-    <logger name="com.firefly.common.data.enrichment.EnrichmentRequestValidator" level="OFF" />
-    <logger name="com.firefly.common.data.service.AbstractResilientDataEnricher" level="OFF" />
-    <logger name="com.firefly.common.data.service.AbstractResilientSyncDataJobService" level="OFF" />
-    <logger name="com.firefly.common.data.service.AbstractResilientDataJobService" level="OFF" />
-    <logger name="com.firefly.common.data.controller.AbstractDataJobController" level="OFF" />
-    <logger name="com.firefly.common.data.controller.AbstractSyncDataJobController" level="OFF" />
-    <logger name="com.firefly.common.data.controller.AbstractDataEnricherController" level="OFF" />
-    <logger name="com.firefly.common.data.stepevents.StepEventPublisherBridge" level="OFF" />
-    <logger name="com.firefly.common.data.service.TypedDataEnricher" level="OFF" />
-    <logger name="com.firefly.common.data.service.DataEnricherRegistry" level="OFF" />
-    <logger name="com.firefly.common.data.service.DataJobDiscoveryService" level="OFF" />
-    <logger name="com.firefly.common.data.observability.JobTracingService" level="OFF" />
-    <logger name="com.firefly.common.data.mapper.JobResultMapperRegistry" level="OFF" />
+    <logger name="org.fireflyframework.data.operation.AbstractProviderOperation" level="OFF" />
+    <logger name="org.fireflyframework.data.enrichment.EnrichmentRequestValidator" level="OFF" />
+    <logger name="org.fireflyframework.data.service.AbstractResilientDataEnricher" level="OFF" />
+    <logger name="org.fireflyframework.data.service.AbstractResilientSyncDataJobService" level="OFF" />
+    <logger name="org.fireflyframework.data.service.AbstractResilientDataJobService" level="OFF" />
+    <logger name="org.fireflyframework.data.controller.AbstractDataJobController" level="OFF" />
+    <logger name="org.fireflyframework.data.controller.AbstractSyncDataJobController" level="OFF" />
+    <logger name="org.fireflyframework.data.controller.AbstractDataEnricherController" level="OFF" />
+    <logger name="org.fireflyframework.data.stepevents.StepEventPublisherBridge" level="OFF" />
+    <logger name="org.fireflyframework.data.service.TypedDataEnricher" level="OFF" />
+    <logger name="org.fireflyframework.data.service.DataEnricherRegistry" level="OFF" />
+    <logger name="org.fireflyframework.data.service.DataJobDiscoveryService" level="OFF" />
+    <logger name="org.fireflyframework.data.observability.JobTracingService" level="OFF" />
+    <logger name="org.fireflyframework.data.mapper.JobResultMapperRegistry" level="OFF" />
 
     <!-- Keep INFO level for important business logic -->
-    <logger name="com.firefly.common.data" level="WARN" />
+    <logger name="org.fireflyframework.data" level="WARN" />
     
     <!-- Third-party loggers -->
     <logger name="org.apache.kafka" level="ERROR" />

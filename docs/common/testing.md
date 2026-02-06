@@ -1,6 +1,6 @@
 # Testing Guide
 
-Comprehensive testing strategies for `lib-common-data`.
+Comprehensive testing strategies for `fireflyframework-data`.
 
 ## Table of Contents
 

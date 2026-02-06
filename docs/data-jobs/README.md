@@ -1,6 +1,6 @@
 # Data Jobs Documentation (Internal Index)
 
-This folder contains the canonical documentation for Data Jobs in lib-common-data.
+This folder contains the canonical documentation for Data Jobs in fireflyframework-data.
 
 - Canonical guide: [guide.md](guide.md)
 - This README exists to help you quickly find the right entry point and understand scope based on the actual code in this repository.
@@ -16,19 +16,19 @@ See Architecture and API details in the guide: [guide.md](guide.md)
 The documentation reflects the real implementation in the codebase. Key components and packages:
 
 - Services
-  - Async: `com.firefly.common.data.service.AbstractResilientDataJobService`
-  - Sync: `com.firefly.common.data.service.AbstractResilientSyncDataJobService`
+  - Async: `org.fireflyframework.data.service.AbstractResilientDataJobService`
+  - Sync: `org.fireflyframework.data.service.AbstractResilientSyncDataJobService`
 
 - Controllers (REST contracts and base classes)
-  - Async: `com.firefly.common.data.controller.DataJobController` (interface)
-  - Async base impl: `com.firefly.common.data.controller.AbstractDataJobController`
-  - Sync: `com.firefly.common.data.controller.SyncDataJobController` (interface)
-  - Sync base impl: `com.firefly.common.data.controller.AbstractSyncDataJobController`
+  - Async: `org.fireflyframework.data.controller.DataJobController` (interface)
+  - Async base impl: `org.fireflyframework.data.controller.AbstractDataJobController`
+  - Sync: `org.fireflyframework.data.controller.SyncDataJobController` (interface)
+  - Sync base impl: `org.fireflyframework.data.controller.AbstractSyncDataJobController`
 
 - Configuration
-  - `com.firefly.common.data.config.JobOrchestrationProperties` (prefix: `firefly.data.orchestration`)
+  - `org.fireflyframework.data.config.JobOrchestrationProperties` (prefix: `firefly.data.orchestration`)
 
-These are referenced throughout the guide and in tests under `src/test/java/com/firefly/common/data/...`.
+These are referenced throughout the guide and in tests under `src/test/java/org/fireflyframework/common/data/...`.
 
 ## Endpoints (As Implemented)
 

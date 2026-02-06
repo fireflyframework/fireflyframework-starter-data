@@ -38,9 +38,9 @@
 
 ```xml
 <dependency>
-    <groupId>com.firefly</groupId>
-    <artifactId>lib-common-data</artifactId>
-    <version>${lib-common-data.version}</version>
+    <groupId>org.fireflyframework</groupId>
+    <artifactId>fireflyframework-data</artifactId>
+    <version>${fireflyframework-data.version}</version>
 </dependency>
 ```
 
@@ -102,7 +102,7 @@ POST /api/v1/enrichment/smart
 
 ### How It Works
 
-The library (`lib-common-data`) **automatically creates** these global controllers via Spring Boot auto-configuration:
+The library (`fireflyframework-data`) **automatically creates** these global controllers via Spring Boot auto-configuration:
 
 1. **`SmartEnrichmentController`** - `POST /api/v1/enrichment/smart`
 2. **`EnrichmentDiscoveryController`** - `GET /api/v1/enrichment/providers`
@@ -111,7 +111,7 @@ The library (`lib-common-data`) **automatically creates** these global controlle
 **Your microservice structure**:
 ```
 your-enricher-microservice/
-├── pom.xml (includes lib-common-data)
+├── pom.xml (includes fireflyframework-data)
 ├── YourEnricher.java (@EnricherMetadata)
 └── Application.java (@SpringBootApplication)
 
@@ -153,7 +153,7 @@ The complete guide covers everything you need to know:
 
 ## ✨ What You Get Automatically
 
-When you add `lib-common-data` and create enrichers with `@EnricherMetadata`, the library automatically provides:
+When you add `fireflyframework-data` and create enrichers with `@EnricherMetadata`, the library automatically provides:
 
 ### Global REST Controllers (Created by Library)
 The library **automatically creates** these controllers - you don't need to create them:

@@ -1,6 +1,6 @@
 # Resiliency
 
-This document describes the resiliency patterns implemented in lib-common-data using Resilience4j.
+This document describes the resiliency patterns implemented in fireflyframework-data using Resilience4j.
 
 ## Table of Contents
 

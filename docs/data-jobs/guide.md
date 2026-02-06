@@ -1,10 +1,10 @@
 # Data Jobs — Complete Guide
 
-> **Complete guide for building data processing jobs with lib-common-data**
+> **Complete guide for building data processing jobs with fireflyframework-data**
 >
 > **Time**: 1-2 hours | **Prerequisites**: Java 21+, Maven 3.8+, Spring Boot 3.x, WebFlux
 
-This is the complete, canonical guide for implementing Data Jobs with lib-common-data. It consolidates and replaces all previous Data Jobs documents (step-by-step, lifecycle, sync jobs, multiple jobs example, SAGA integration, etc.).
+This is the complete, canonical guide for implementing Data Jobs with fireflyframework-data. It consolidates and replaces all previous Data Jobs documents (step-by-step, lifecycle, sync jobs, multiple jobs example, SAGA integration, etc.).
 
 If you need orchestrated workflows (async or quick sync operations) in your core-data microservice, this guide has everything you need.
 
@@ -672,12 +672,12 @@ Response to Client
 
 ### Step 1: Add Dependency
 
-Add `lib-common-data` to your `pom.xml`:
+Add `fireflyframework-data` to your `pom.xml`:
 
 ```xml
 <dependency>
-  <groupId>com.firefly</groupId>
-  <artifactId>lib-common-data</artifactId>
+  <groupId>org.fireflyframework</groupId>
+  <artifactId>fireflyframework-data</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 </dependency>
 
@@ -702,15 +702,15 @@ Create a service that extends `AbstractResilientDataJobService` and implements t
 ```java
 package com.example.jobs;
 
-import com.firefly.common.data.event.JobEventPublisher;
-import com.firefly.common.data.model.JobStageRequest;
-import com.firefly.common.data.model.JobStageResponse;
-import com.firefly.common.data.observability.JobMetricsService;
-import com.firefly.common.data.observability.JobTracingService;
-import com.firefly.common.data.persistence.service.JobAuditService;
-import com.firefly.common.data.persistence.service.JobExecutionResultService;
-import com.firefly.common.data.resiliency.ResiliencyDecoratorService;
-import com.firefly.common.data.service.AbstractResilientDataJobService;
+import org.fireflyframework.data.event.JobEventPublisher;
+import org.fireflyframework.data.model.JobStageRequest;
+import org.fireflyframework.data.model.JobStageResponse;
+import org.fireflyframework.data.observability.JobMetricsService;
+import org.fireflyframework.data.observability.JobTracingService;
+import org.fireflyframework.data.persistence.service.JobAuditService;
+import org.fireflyframework.data.persistence.service.JobExecutionResultService;
+import org.fireflyframework.data.resiliency.ResiliencyDecoratorService;
+import org.fireflyframework.data.service.AbstractResilientDataJobService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -799,8 +799,8 @@ Create a controller that extends `AbstractDataJobController` to expose REST endp
 ```java
 package com.example.jobs;
 
-import com.firefly.common.data.controller.AbstractDataJobController;
-import com.firefly.common.data.service.DataJobService;
+import org.fireflyframework.data.controller.AbstractDataJobController;
+import org.fireflyframework.data.service.DataJobService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -929,15 +929,15 @@ Create a service that extends `AbstractResilientSyncDataJobService` and implemen
 ```java
 package com.example.jobs;
 
-import com.firefly.common.data.event.JobEventPublisher;
-import com.firefly.common.data.model.JobStageRequest;
-import com.firefly.common.data.model.JobStageResponse;
-import com.firefly.common.data.observability.JobMetricsService;
-import com.firefly.common.data.observability.JobTracingService;
-import com.firefly.common.data.persistence.service.JobAuditService;
-import com.firefly.common.data.persistence.service.JobExecutionResultService;
-import com.firefly.common.data.resiliency.ResiliencyDecoratorService;
-import com.firefly.common.data.service.AbstractResilientSyncDataJobService;
+import org.fireflyframework.data.event.JobEventPublisher;
+import org.fireflyframework.data.model.JobStageRequest;
+import org.fireflyframework.data.model.JobStageResponse;
+import org.fireflyframework.data.observability.JobMetricsService;
+import org.fireflyframework.data.observability.JobTracingService;
+import org.fireflyframework.data.persistence.service.JobAuditService;
+import org.fireflyframework.data.persistence.service.JobExecutionResultService;
+import org.fireflyframework.data.resiliency.ResiliencyDecoratorService;
+import org.fireflyframework.data.service.AbstractResilientSyncDataJobService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -983,8 +983,8 @@ Create a controller that extends `AbstractSyncDataJobController` to expose the e
 ```java
 package com.example.jobs;
 
-import com.firefly.common.data.controller.AbstractSyncDataJobController;
-import com.firefly.common.data.service.SyncDataJobService;
+import org.fireflyframework.data.controller.AbstractSyncDataJobController;
+import org.fireflyframework.data.service.SyncDataJobService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -1128,7 +1128,7 @@ All endpoints automatically include:
 
 All job-related configuration is centralized in `JobOrchestrationProperties` with prefix `firefly.data.orchestration`.
 
-**Configuration Source**: `com.firefly.common.data.config.JobOrchestrationProperties`
+**Configuration Source**: `org.fireflyframework.data.config.JobOrchestrationProperties`
 
 ### Core Properties
 
@@ -1395,7 +1395,7 @@ public interface JobOrchestrator {
 }
 ```
 
-**Source**: `com.firefly.common.data.orchestration.port.JobOrchestrator`
+**Source**: `org.fireflyframework.data.orchestration.port.JobOrchestrator`
 
 ### Supported Orchestrators
 
@@ -2064,9 +2064,9 @@ void shouldHandleReactiveFlow() {
 ### Test Examples in Repository
 
 See the test sources in this repository for working examples:
-- `src/test/java/com/firefly/common/data/controller/AbstractDataJobControllerTest.java`
-- `src/test/java/com/firefly/common/data/controller/AbstractSyncDataJobControllerTest.java`
-- `src/test/java/com/firefly/common/data/service/AbstractResilientSyncDataJobServiceTest.java`
+- `src/test/java/org/fireflyframework/common/data/controller/AbstractDataJobControllerTest.java`
+- `src/test/java/org/fireflyframework/common/data/controller/AbstractSyncDataJobControllerTest.java`
+- `src/test/java/org/fireflyframework/common/data/service/AbstractResilientSyncDataJobServiceTest.java`
 
 ### Testing Best Practices
 
@@ -2106,9 +2106,9 @@ See the test sources in this repository for working examples:
 ```yaml
 logging:
   level:
-    com.firefly.common.data: DEBUG
-    com.firefly.common.data.service: TRACE
-    com.firefly.common.data.controller: DEBUG
+    org.fireflyframework.data: DEBUG
+    org.fireflyframework.data.service: TRACE
+    org.fireflyframework.data.controller: DEBUG
 ```
 
 #### 2. Check Actuator Endpoints
@@ -2139,7 +2139,7 @@ curl http://localhost:8080/actuator/configprops | jq '.contexts.application.bean
 ```java
 @SpringBootApplication
 @ComponentScan(basePackages = {
-    "com.firefly.common.data",  // Required for lib-common-data
+    "org.fireflyframework.data",  // Required for fireflyframework-data
     "com.example.customer"       // Your application packages
 })
 public class CustomerDataServiceApplication {
@@ -2175,7 +2175,7 @@ public class CustomerDataServiceApplication implements CommandLineRunner {
 
 If you encounter issues not covered here:
 
-1. **Check Logs**: Enable DEBUG logging for `com.firefly.common.data`
+1. **Check Logs**: Enable DEBUG logging for `org.fireflyframework.data`
 2. **Review Configuration**: Verify all required properties are set
 3. **Check Dependencies**: Ensure all required dependencies are in `pom.xml`
 4. **Test Isolation**: Create a minimal test case to isolate the issue
@@ -2341,7 +2341,7 @@ A:
 
 ### Migration Questions
 
-**Q: How do I migrate from custom job implementation to lib-common-data?**
+**Q: How do I migrate from custom job implementation to fireflyframework-data?**
 
 A:
 1. Create service extending `AbstractResilientDataJobService`

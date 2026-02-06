@@ -1,6 +1,6 @@
 # API Reference
 
-Complete API reference for `lib-common-data`.
+Complete API reference for `fireflyframework-data`.
 
 ## Table of Contents
 
@@ -25,7 +25,7 @@ Complete API reference for `lib-common-data`.
 
 Business logic interface for multi-stage job operations.
 
-**Package:** `com.firefly.common.data.service`
+**Package:** `org.fireflyframework.data.service`
 
 ```java
 public interface DataJobService {
@@ -179,7 +179,7 @@ Mono<JobStageResponse> response = dataJobService.getJobResult(request);
 
 Business logic interface for single-stage synchronous job operations.
 
-**Package:** `com.firefly.common.data.service`
+**Package:** `org.fireflyframework.data.service`
 
 ```java
 public interface SyncDataJobService {
@@ -246,7 +246,7 @@ See [Data Jobs — Complete Guide](../data-jobs/guide.md#quick-start-sync) for c
 
 REST API interface for job stage endpoints.
 
-**Package:** `com.firefly.common.data.controller`
+**Package:** `org.fireflyframework.data.controller`
 
 **Base Path:** `/api/v1/jobs`
 
@@ -446,7 +446,7 @@ Stop a running job execution.
 
 REST API interface for synchronous job operations.
 
-**Package:** `com.firefly.common.data.controller`
+**Package:** `org.fireflyframework.data.controller`
 
 ```java
 @Tag(name = "Sync Data Jobs")
@@ -538,7 +538,7 @@ See [Data Jobs — Complete Guide](../data-jobs/guide.md#quick-start-sync) for c
 
 Global controller for discovering available data enrichment providers.
 
-**Package:** `com.firefly.common.data.controller`
+**Package:** `org.fireflyframework.data.controller`
 
 **Purpose:**
 - Provides endpoints to discover which data enrichers are available in the microservice
@@ -690,7 +690,7 @@ public class EnrichmentDiscoveryController {
 
 Enum defining job lifecycle stages.
 
-**Package:** `com.firefly.common.data.model`
+**Package:** `org.fireflyframework.data.model`
 
 ```java
 public enum JobStage {
@@ -709,7 +709,7 @@ public enum JobStage {
 
 Request model for job operations.
 
-**Package:** `com.firefly.common.data.model`
+**Package:** `org.fireflyframework.data.model`
 
 ```java
 @Data
@@ -747,7 +747,7 @@ public class JobStageRequest {
 
 Response model with execution details and status.
 
-**Package:** `com.firefly.common.data.model`
+**Package:** `org.fireflyframework.data.model`
 
 ```java
 @Data
@@ -789,7 +789,7 @@ public class JobStageResponse {
 
 Port interface for workflow orchestrators.
 
-**Package:** `com.firefly.common.data.orchestration.port`
+**Package:** `org.fireflyframework.data.orchestration.port`
 
 ```java
 public interface JobOrchestrator {
@@ -872,7 +872,7 @@ Retrieves the execution history of a job.
 
 Request model for starting a job execution in the orchestrator.
 
-**Package:** `com.firefly.common.data.orchestration.model`
+**Package:** `org.fireflyframework.data.orchestration.model`
 
 ```java
 @Data
@@ -918,7 +918,7 @@ protected Mono<JobStageResponse> doStartJob(JobStageRequest request) {
 
 Enum of execution states.
 
-**Package:** `com.firefly.common.data.orchestration.model`
+**Package:** `org.fireflyframework.data.orchestration.model`
 
 ```java
 public enum JobExecutionStatus {
@@ -938,7 +938,7 @@ public enum JobExecutionStatus {
 
 Generic mapper interface for result transformation.
 
-**Package:** `com.firefly.common.data.mapper`
+**Package:** `org.fireflyframework.data.mapper`
 
 ```java
 public interface JobResultMapper<S, T> {
@@ -991,7 +991,7 @@ public interface CustomerDataMapper extends JobResultMapper<Map<String, Object>,
 
 Registry for managing job result mappers.
 
-**Package:** `com.firefly.common.data.mapper`
+**Package:** `org.fireflyframework.data.mapper`
 
 ```java
 @Component
@@ -1032,7 +1032,7 @@ CustomerDTO result = mapper.mapToTarget(rawData);
 
 Registry for managing and discovering data enrichers.
 
-**Package:** `com.firefly.common.data.service`
+**Package:** `org.fireflyframework.data.service`
 
 **Purpose:**
 - Auto-discovers all `DataEnricher` implementations in the Spring context
@@ -1443,7 +1443,7 @@ INFO  DataEnricherRegistry - Data enricher registration complete. Providers: 3, 
 
 Utility class for extracting trace IDs and span IDs from Micrometer Observation.
 
-**Package:** `com.firefly.common.data.util`
+**Package:** `org.fireflyframework.data.util`
 
 **Features:**
 - ✅ Real trace ID and span ID extraction from Micrometer Tracing
@@ -1536,7 +1536,7 @@ if (TracingContextExtractor.hasTracingContext(observation)) {
 
 Utility class for calculating data sizes by JSON serialization.
 
-**Package:** `com.firefly.common.data.util`
+**Package:** `org.fireflyframework.data.util`
 
 **Features:**
 - ✅ Precise byte size calculation via JSON serialization

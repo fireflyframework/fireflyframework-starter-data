@@ -1,6 +1,6 @@
 # Data Enrichers - Complete Guide
 
-> **Complete guide for building data enricher microservices with lib-common-data**
+> **Complete guide for building data enricher microservices with fireflyframework-data**
 >
 > **Time**: 1-2 hours | **Prerequisites**: Java 21+, Maven 3.8+, Spring Boot 3.x
 
@@ -351,9 +351,9 @@ Runtime Phase:
        ← returns [Equifax Enricher] (highest priority match)
 ```
 
-### How lib-common-data Implements This
+### How fireflyframework-data Implements This
 
-**lib-common-data** provides a framework where you:
+**fireflyframework-data** provides a framework where you:
 
 1. **Create one enricher per type per tenant**
    ```java
@@ -602,7 +602,7 @@ enricher.enrich(request);  // Works with any of them
 
 ### What the Library Creates Automatically
 
-When you add `lib-common-data` to your microservice, the library **automatically creates** these global REST controllers:
+When you add `fireflyframework-data` to your microservice, the library **automatically creates** these global REST controllers:
 
 1. **`SmartEnrichmentController`** - Smart enrichment endpoints
    - `POST /api/v1/enrichment/smart` - Single enrichment
@@ -625,7 +625,7 @@ When you add `lib-common-data` to your microservice, the library **automatically
 **You don't create these controllers** - they are part of the library and are automatically registered via Spring Boot auto-configuration (`DataEnrichmentAutoConfiguration`).
 
 **Your microservice only needs to**:
-1. Add `lib-common-data` dependency
+1. Add `fireflyframework-data` dependency
 2. Create enrichers with `@EnricherMetadata`
 3. That's it! The REST API is ready
 
@@ -639,7 +639,7 @@ Let's build **`core-data-credit-bureaus`** - a microservice that provides credit
 
 ```bash
 mvn archetype:generate \
-  -DgroupId=com.firefly \
+  -DgroupId=org.fireflyframework \
   -DartifactId=core-data-credit-bureaus \
   -DarchetypeArtifactId=maven-archetype-quickstart \
   -DinteractiveMode=false
@@ -653,9 +653,9 @@ cd core-data-credit-bureaus
 <dependencies>
     <!-- Firefly Common Data Library -->
     <dependency>
-        <groupId>com.firefly</groupId>
-        <artifactId>lib-common-data</artifactId>
-        <version>${lib-common-data.version}</version>
+        <groupId>org.fireflyframework</groupId>
+        <artifactId>fireflyframework-data</artifactId>
+        <version>${fireflyframework-data.version}</version>
     </dependency>
 
     <!-- Spring Boot WebFlux -->
@@ -669,14 +669,14 @@ cd core-data-credit-bureaus
 ### Step 3: Create Your Enricher
 
 ```java
-package com.firefly.creditbureaus.enricher;
+package org.fireflyframework.creditbureaus.enricher;
 
-import com.firefly.common.data.enrichment.EnricherMetadata;
-import com.firefly.common.data.service.DataEnricher;
-import com.firefly.common.data.model.EnrichmentRequest;
-import com.firefly.creditbureaus.client.EquifaxSpainClient;
-import com.firefly.creditbureaus.dto.CreditReportDTO;
-import com.firefly.creditbureaus.dto.EquifaxResponse;
+import org.fireflyframework.data.enrichment.EnricherMetadata;
+import org.fireflyframework.data.service.DataEnricher;
+import org.fireflyframework.data.model.EnrichmentRequest;
+import org.fireflyframework.creditbureaus.client.EquifaxSpainClient;
+import org.fireflyframework.creditbureaus.dto.CreditReportDTO;
+import org.fireflyframework.creditbureaus.dto.EquifaxResponse;
 import reactor.core.publisher.Mono;
 
 @EnricherMetadata(
@@ -779,7 +779,7 @@ You **DO NOT** need to create:
 ### ✅ What You DO Need to Do
 
 You **ONLY** need to:
-1. ✅ Add `lib-common-data` dependency to your `pom.xml`
+1. ✅ Add `fireflyframework-data` dependency to your `pom.xml`
 2. ✅ Create enricher classes with `@EnricherMetadata`
 3. ✅ That's it!
 
@@ -793,9 +793,9 @@ You **ONLY** need to:
 ├──────────────────────────────────────────────────────────────────────┤
 │                                                                      │
 │  📁 pom.xml                                                          │
-│     └── <dependency>lib-common-data</dependency>                     │
+│     └── <dependency>fireflyframework-data</dependency>                     │
 │                                                                      │
-│  📁 src/main/java/com/firefly/creditbureaus/                         │
+│  📁 src/main/java/org/fireflyframework/creditbureaus/                         │
 │     ├── 📄 Application.java (@SpringBootApplication)                 │
 │     └── 📁 enricher/                                                 │
 │         ├── 📄 EquifaxSpainCreditEnricher.java (@EnricherMetadata)   │
@@ -808,10 +808,10 @@ You **ONLY** need to:
                           Spring Boot starts
                                    ↓
 ┌──────────────────────────────────────────────────────────────────────┐
-│ lib-common-data Auto-Configuration Activates                         │
+│ fireflyframework-data Auto-Configuration Activates                         │
 ├──────────────────────────────────────────────────────────────────────┤
 │                                                                      │
-│  1️⃣  @ComponentScan discovers "com.firefly.common.data" package      │
+│  1️⃣  @ComponentScan discovers "org.fireflyframework.data" package      │
 │                                                                      │
 │  2️⃣  Registers these @RestController beans:                          │
 │      ✅ SmartEnrichmentController                                    │
@@ -853,14 +853,14 @@ You **ONLY** need to:
 └──────────────────────────────────────────────────────────────────────┘
 ```
 
-**Key Point**: The controllers (`SmartEnrichmentController`, etc.) are **inside lib-common-data JAR**, not in your microservice code. Spring Boot's `@ComponentScan` from `DataEnrichmentAutoConfiguration` automatically discovers and registers them.
+**Key Point**: The controllers (`SmartEnrichmentController`, etc.) are **inside fireflyframework-data JAR**, not in your microservice code. Spring Boot's `@ComponentScan` from `DataEnrichmentAutoConfiguration` automatically discovers and registers them.
 
 ### Example: Complete Microservice Structure
 
 ```
 core-data-provider-a-enricher/
 ├── pom.xml
-│   └── <dependency>lib-common-data</dependency>
+│   └── <dependency>fireflyframework-data</dependency>
 ├── src/main/java/
 │   └── com/company/enricher/
 │       ├── ProviderACreditEnricher.java      # Your enricher
@@ -1498,7 +1498,7 @@ core-data-credit-bureaus/
 ├── credit-bureaus-domain/                    # Shared DTOs, models, enums
 │   ├── pom.xml
 │   └── src/main/java/
-│       └── com/firefly/creditbureaus/domain/
+│       └── org/fireflyframework/creditbureaus/domain/
 │           ├── dto/
 │           │   ├── CreditReportDTO.java       # Common credit report DTO
 │           │   └── CompanySearchRequest.java
@@ -1509,7 +1509,7 @@ core-data-credit-bureaus/
 ├── equifax-spain-client/                     # Equifax Spain REST client
 │   ├── pom.xml
 │   └── src/main/java/
-│       └── com/firefly/creditbureaus/equifax/spain/
+│       └── org/fireflyframework/creditbureaus/equifax/spain/
 │           ├── client/
 │           │   └── EquifaxSpainClient.java
 │           ├── model/
@@ -1520,7 +1520,7 @@ core-data-credit-bureaus/
 ├── experian-usa-client/                      # Experian USA REST client
 │   ├── pom.xml
 │   └── src/main/java/
-│       └── com/firefly/creditbureaus/experian/usa/
+│       └── org/fireflyframework/creditbureaus/experian/usa/
 │           ├── client/
 │           │   └── ExperianUsaClient.java
 │           ├── model/
@@ -1531,7 +1531,7 @@ core-data-credit-bureaus/
 ├── credit-bureaus-enricher/                  # Enrichers (main module)
 │   ├── pom.xml
 │   └── src/main/java/
-│       └── com/firefly/creditbureaus/enricher/
+│       └── org/fireflyframework/creditbureaus/enricher/
 │           ├── EquifaxSpainCreditReportEnricher.java
 │           ├── ExperianUsaCreditReportEnricher.java
 │           └── operation/
@@ -1542,7 +1542,7 @@ core-data-credit-bureaus/
     ├── pom.xml
     └── src/main/
         ├── java/
-        │   └── com/firefly/creditbureaus/
+        │   └── org/fireflyframework/creditbureaus/
         │       └── CreditBureausApplication.java
         └── resources/
             └── application.yml
@@ -1560,7 +1560,7 @@ Let's build the **Equifax Spain enricher** for `core-data-credit-bureaus` step b
 ```xml
 <project>
     <parent>
-        <groupId>com.firefly</groupId>
+        <groupId>org.fireflyframework</groupId>
         <artifactId>core-data-credit-bureaus</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
@@ -1584,7 +1584,7 @@ Let's build the **Equifax Spain enricher** for `core-data-credit-bureaus` step b
 **CreditReportDTO.java** (Common DTO for all providers):
 
 ```java
-package com.firefly.creditbureaus.domain.dto;
+package org.fireflyframework.creditbureaus.domain.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -1605,7 +1605,7 @@ public class CreditReportDTO {
 **CreditRating.java** (Enum):
 
 ```java
-package com.firefly.creditbureaus.domain.enums;
+package org.fireflyframework.creditbureaus.domain.enums;
 
 public enum CreditRating {
     AAA, AA, A, BBB, BB, B, CCC, CC, C, D
@@ -1619,7 +1619,7 @@ public enum CreditRating {
 ```xml
 <project>
     <parent>
-        <groupId>com.firefly</groupId>
+        <groupId>org.fireflyframework</groupId>
         <artifactId>core-data-credit-bureaus</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
@@ -1629,12 +1629,12 @@ public enum CreditRating {
 
     <dependencies>
         <dependency>
-            <groupId>com.firefly</groupId>
+            <groupId>org.fireflyframework</groupId>
             <artifactId>credit-bureaus-domain</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.firefly</groupId>
-            <artifactId>lib-common-client</artifactId>
+            <groupId>org.fireflyframework</groupId>
+            <artifactId>fireflyframework-client</artifactId>
         </dependency>
     </dependencies>
 </project>
@@ -1643,7 +1643,7 @@ public enum CreditRating {
 **EquifaxResponse.java** (Equifax-specific response model):
 
 ```java
-package com.firefly.creditbureaus.equifax.spain.model;
+package org.fireflyframework.creditbureaus.equifax.spain.model;
 
 import lombok.Data;
 
@@ -1662,10 +1662,10 @@ public class EquifaxResponse {
 **EquifaxSpainClient.java**:
 
 ```java
-package com.firefly.creditbureaus.equifax.spain.client;
+package org.fireflyframework.creditbureaus.equifax.spain.client;
 
-import com.firefly.common.client.RestClient;
-import com.firefly.creditbureaus.equifax.spain.model.EquifaxResponse;
+import org.fireflyframework.client.RestClient;
+import org.fireflyframework.creditbureaus.equifax.spain.model.EquifaxResponse;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
@@ -1690,10 +1690,10 @@ public class EquifaxSpainClient {
 **EquifaxSpainConfig.java**:
 
 ```java
-package com.firefly.creditbureaus.equifax.spain.config;
+package org.fireflyframework.creditbureaus.equifax.spain.config;
 
-import com.firefly.common.client.RestClient;
-import com.firefly.common.client.config.RestClientProperties;
+import org.fireflyframework.client.RestClient;
+import org.fireflyframework.client.config.RestClientProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -1723,7 +1723,7 @@ public class EquifaxSpainConfig {
 ```xml
 <project>
     <parent>
-        <groupId>com.firefly</groupId>
+        <groupId>org.fireflyframework</groupId>
         <artifactId>core-data-credit-bureaus</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
@@ -1733,16 +1733,16 @@ public class EquifaxSpainConfig {
 
     <dependencies>
         <dependency>
-            <groupId>com.firefly</groupId>
+            <groupId>org.fireflyframework</groupId>
             <artifactId>credit-bureaus-domain</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.firefly</groupId>
+            <groupId>org.fireflyframework</groupId>
             <artifactId>equifax-spain-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.firefly</groupId>
-            <artifactId>lib-common-data</artifactId>
+            <groupId>org.fireflyframework</groupId>
+            <artifactId>fireflyframework-data</artifactId>
         </dependency>
     </dependencies>
 </project>
@@ -1751,18 +1751,18 @@ public class EquifaxSpainConfig {
 **EquifaxSpainCreditReportEnricher.java**:
 
 ```java
-package com.firefly.creditbureaus.enricher;
+package org.fireflyframework.creditbureaus.enricher;
 
-import com.firefly.common.data.enrichment.EnricherMetadata;
-import com.firefly.common.data.event.EnrichmentEventPublisher;
-import com.firefly.common.data.model.EnrichmentRequest;
-import com.firefly.common.data.observability.JobMetricsService;
-import com.firefly.common.data.observability.JobTracingService;
-import com.firefly.common.data.resiliency.ResiliencyDecoratorService;
-import com.firefly.common.data.service.DataEnricher;
-import com.firefly.creditbureaus.equifax.spain.client.EquifaxSpainClient;
-import com.firefly.creditbureaus.equifax.spain.model.EquifaxResponse;
-import com.firefly.creditbureaus.domain.dto.CreditReportDTO;
+import org.fireflyframework.data.enrichment.EnricherMetadata;
+import org.fireflyframework.data.event.EnrichmentEventPublisher;
+import org.fireflyframework.data.model.EnrichmentRequest;
+import org.fireflyframework.data.observability.JobMetricsService;
+import org.fireflyframework.data.observability.JobTracingService;
+import org.fireflyframework.data.resiliency.ResiliencyDecoratorService;
+import org.fireflyframework.data.service.DataEnricher;
+import org.fireflyframework.creditbureaus.equifax.spain.client.EquifaxSpainClient;
+import org.fireflyframework.creditbureaus.equifax.spain.model.EquifaxResponse;
+import org.fireflyframework.creditbureaus.domain.dto.CreditReportDTO;
 import reactor.core.publisher.Mono;
 
 @EnricherMetadata(
@@ -1821,7 +1821,7 @@ public class EquifaxSpainCreditReportEnricher
 ```xml
 <project>
     <parent>
-        <groupId>com.firefly</groupId>
+        <groupId>org.fireflyframework</groupId>
         <artifactId>core-data-credit-bureaus</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
@@ -1831,7 +1831,7 @@ public class EquifaxSpainCreditReportEnricher
 
     <dependencies>
         <dependency>
-            <groupId>com.firefly</groupId>
+            <groupId>org.fireflyframework</groupId>
             <artifactId>credit-bureaus-enricher</artifactId>
         </dependency>
         <dependency>
@@ -1854,14 +1854,14 @@ public class EquifaxSpainCreditReportEnricher
 **CreditBureausApplication.java**:
 
 ```java
-package com.firefly.creditbureaus;
+package org.fireflyframework.creditbureaus;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(scanBasePackages = {
-    "com.firefly.creditbureaus",      // Your microservice package
-    "com.firefly.common.data"         // Required: lib-common-data package for auto-configuration
+    "org.fireflyframework.creditbureaus",      // Your microservice package
+    "org.fireflyframework.data"         // Required: fireflyframework-data package for auto-configuration
 })
 public class CreditBureausApplication {
 
@@ -1871,7 +1871,7 @@ public class CreditBureausApplication {
 }
 ```
 
-**Important**: The `scanBasePackages` must include `"com.firefly.common.data"` to enable auto-configuration of:
+**Important**: The `scanBasePackages` must include `"org.fireflyframework.data"` to enable auto-configuration of:
 - Global REST controllers (SmartEnrichmentController, EnrichmentDiscoveryController, etc.)
 - DataEnricherRegistry
 - Enrichment cache service
@@ -1920,7 +1920,7 @@ firefly:
     enrichment:
       enabled: true                    # Enable data enrichment (default: true)
       publish-events: true             # Publish enrichment events (default: true)
-      cache-enabled: true              # Enable caching (default: false, requires lib-common-cache)
+      cache-enabled: true              # Enable caching (default: false, requires fireflyframework-cache)
       cache-ttl-seconds: 3600          # Cache TTL in seconds (default: 3600)
       default-timeout-seconds: 30      # Default timeout (default: 30)
       max-batch-size: 100              # Max batch size (default: 100)
@@ -1929,7 +1929,7 @@ firefly:
       discovery:
         enabled: true                  # Enable global controllers (default: true)
 
-    # Resiliency Configuration (from lib-common-data orchestration)
+    # Resiliency Configuration (from fireflyframework-data orchestration)
     orchestration:
       resiliency:
         circuit-breaker:
@@ -2330,7 +2330,7 @@ Step 2: Use Equifax company ID in credit report enrichment request
 #### Step 1: Define Request/Response DTOs
 
 ```java
-package com.firefly.creditbureaus.domain.dto;
+package org.fireflyframework.creditbureaus.domain.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -2358,13 +2358,13 @@ public class CompanySearchResponse {
 Use `@EnricherOperation` annotation and extend `AbstractEnricherOperation`:
 
 ```java
-package com.firefly.creditbureaus.enricher.operation;
+package org.fireflyframework.creditbureaus.enricher.operation;
 
-import com.firefly.common.data.operation.AbstractEnricherOperation;
-import com.firefly.common.data.operation.EnricherOperation;
-import com.firefly.creditbureaus.equifax.spain.client.EquifaxSpainClient;
-import com.firefly.creditbureaus.domain.dto.CompanySearchRequest;
-import com.firefly.creditbureaus.domain.dto.CompanySearchResponse;
+import org.fireflyframework.data.operation.AbstractEnricherOperation;
+import org.fireflyframework.data.operation.EnricherOperation;
+import org.fireflyframework.creditbureaus.equifax.spain.client.EquifaxSpainClient;
+import org.fireflyframework.creditbureaus.domain.dto.CompanySearchRequest;
+import org.fireflyframework.creditbureaus.domain.dto.CompanySearchResponse;
 import org.springframework.web.bind.annotation.RequestMethod;
 import reactor.core.publisher.Mono;
 
@@ -2415,13 +2415,13 @@ public class EquifaxSearchCompanyOperation
 Override `getOperations()` in your enricher:
 
 ```java
-package com.firefly.creditbureaus.enricher;
+package org.fireflyframework.creditbureaus.enricher;
 
-import com.firefly.common.data.enrichment.EnricherMetadata;
-import com.firefly.common.data.service.DataEnricher;
-import com.firefly.common.data.operation.EnricherOperationInterface;
-import com.firefly.creditbureaus.enricher.operation.EquifaxSearchCompanyOperation;
-import com.firefly.creditbureaus.enricher.operation.EquifaxValidateTaxIdOperation;
+import org.fireflyframework.data.enrichment.EnricherMetadata;
+import org.fireflyframework.data.service.DataEnricher;
+import org.fireflyframework.data.operation.EnricherOperationInterface;
+import org.fireflyframework.creditbureaus.enricher.operation.EquifaxSearchCompanyOperation;
+import org.fireflyframework.creditbureaus.enricher.operation.EquifaxValidateTaxIdOperation;
 
 @EnricherMetadata(
     providerName = "Equifax Spain",
@@ -2704,16 +2704,16 @@ public class SearchOperation extends AbstractEnricherOperation<CompanySearchRequ
 ### Unit Testing Your Enricher
 
 ```java
-package com.firefly.creditbureaus.enricher;
+package org.fireflyframework.creditbureaus.enricher;
 
-import com.firefly.common.data.event.EnrichmentEventPublisher;
-import com.firefly.common.data.model.EnrichmentRequest;
-import com.firefly.common.data.observability.JobMetricsService;
-import com.firefly.common.data.observability.JobTracingService;
-import com.firefly.common.data.resiliency.ResiliencyDecoratorService;
-import com.firefly.creditbureaus.equifax.spain.client.EquifaxSpainClient;
-import com.firefly.creditbureaus.equifax.spain.model.EquifaxResponse;
-import com.firefly.creditbureaus.domain.dto.CreditReportDTO;
+import org.fireflyframework.data.event.EnrichmentEventPublisher;
+import org.fireflyframework.data.model.EnrichmentRequest;
+import org.fireflyframework.data.observability.JobMetricsService;
+import org.fireflyframework.data.observability.JobTracingService;
+import org.fireflyframework.data.resiliency.ResiliencyDecoratorService;
+import org.fireflyframework.creditbureaus.equifax.spain.client.EquifaxSpainClient;
+import org.fireflyframework.creditbureaus.equifax.spain.model.EquifaxResponse;
+import org.fireflyframework.creditbureaus.domain.dto.CreditReportDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -2820,11 +2820,11 @@ class EquifaxSpainCreditReportEnricherTest {
 ### Integration Testing
 
 ```java
-package com.firefly.creditbureaus;
+package org.fireflyframework.creditbureaus;
 
-import com.firefly.common.data.model.EnrichmentRequest;
-import com.firefly.common.data.model.EnrichmentResponse;
-import com.firefly.creditbureaus.domain.dto.CreditReportDTO;
+import org.fireflyframework.data.model.EnrichmentRequest;
+import org.fireflyframework.data.model.EnrichmentResponse;
+import org.fireflyframework.creditbureaus.domain.dto.CreditReportDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -2917,7 +2917,7 @@ Data enrichers are configured through Spring Boot properties under the `firefly.
 |----------|------|---------|-------------|
 | `enabled` | boolean | `true` | Enable/disable data enrichment feature |
 | `publish-events` | boolean | `true` | Publish enrichment lifecycle events |
-| `cache-enabled` | boolean | `false` | Enable caching (requires lib-common-cache) |
+| `cache-enabled` | boolean | `false` | Enable caching (requires fireflyframework-cache) |
 | `cache-ttl-seconds` | int | `3600` | Cache TTL in seconds (1 hour) |
 | `default-timeout-seconds` | int | `30` | Default timeout for enrichment operations |
 | `capture-raw-responses` | boolean | `false` | Capture raw provider responses for audit |
@@ -2974,7 +2974,7 @@ firefly:
     enrichment:
       enabled: true                      # Enable data enrichment (default: true)
       publish-events: true               # Publish enrichment events (default: true)
-      cache-enabled: true                # Enable caching (default: false, requires lib-common-cache)
+      cache-enabled: true                # Enable caching (default: false, requires fireflyframework-cache)
       cache-ttl-seconds: 3600            # Cache TTL in seconds (default: 3600 = 1 hour)
       default-timeout-seconds: 30        # Default timeout for enrichment operations (default: 30)
       capture-raw-responses: false       # Capture raw provider responses for audit (default: false)
@@ -3000,7 +3000,7 @@ firefly:
         circuit-breaker-enabled: true    # Enable circuit breaker (default: true)
         rate-limiter-enabled: true       # Enable rate limiting (default: true)
 
-    # Resiliency Configuration (from lib-common-data orchestration)
+    # Resiliency Configuration (from fireflyframework-data orchestration)
     orchestration:
       resiliency:
         circuit-breaker:
@@ -3358,7 +3358,7 @@ management:
 **Solutions**:
 - Check that `firefly.data.enrichment.enabled=true` (default)
 - Check that `firefly.data.enrichment.discovery.enabled=true` (default)
-- Verify `@ComponentScan` includes `com.firefly.common.data` package
+- Verify `@ComponentScan` includes `org.fireflyframework.data` package
 - Check Spring Boot logs for auto-configuration messages
 
 #### 2. No Enricher Found for Type/Tenant
@@ -3376,7 +3376,7 @@ management:
 **Problem**: Enrichment results are not cached
 
 **Solutions**:
-- Verify `lib-common-cache` is in dependencies
+- Verify `fireflyframework-cache` is in dependencies
 - Check `firefly.data.enrichment.cache-enabled=true`
 - Ensure `CacheAdapter` bean is available
 - Check cache configuration in application logs
@@ -3407,7 +3407,7 @@ management:
 **Problem**: Circuit breaker/retry not working
 
 **Solutions**:
-- Verify `lib-common-data` orchestration resiliency is enabled
+- Verify `fireflyframework-data` orchestration resiliency is enabled
 - Check `firefly.data.orchestration.resiliency.*` properties
 - Ensure `ResiliencyDecoratorService` bean is available
 - Review logs for resiliency decorator messages
@@ -3419,10 +3419,10 @@ Enable debug logging to troubleshoot issues:
 ```yaml
 logging:
   level:
-    com.firefly.common.data: DEBUG
-    com.firefly.common.data.controller: DEBUG
-    com.firefly.common.data.service: DEBUG
-    com.firefly.common.data.config: DEBUG
+    org.fireflyframework.data: DEBUG
+    org.fireflyframework.data.controller: DEBUG
+    org.fireflyframework.data.service: DEBUG
+    org.fireflyframework.data.config: DEBUG
 ```
 
 ---
@@ -3471,7 +3471,7 @@ When you create an enricher with `@EnricherMetadata`, you automatically get:
 - ✅ **Bulkhead** - Isolate failures
 
 #### Performance
-- ✅ **Caching** - Tenant-isolated caching with configurable TTL (requires lib-common-cache)
+- ✅ **Caching** - Tenant-isolated caching with configurable TTL (requires fireflyframework-cache)
 - ✅ **Batch Processing** - Parallel batch enrichment with configurable concurrency
 - ✅ **Request Validation** - Fluent validation DSL with clear error messages
 
@@ -3495,7 +3495,7 @@ When you create an enricher with `@EnricherMetadata`, you automatically get:
 ## Need Help?
 
 - **Documentation**: Check the complete API reference in the source code
-- **Examples**: See the test files in `src/test/java/com/firefly/common/data/`
+- **Examples**: See the test files in `src/test/java/org/fireflyframework/common/data/`
 - **Issues**: Report issues in the project's issue tracker
 
 ---

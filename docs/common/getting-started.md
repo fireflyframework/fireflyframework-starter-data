@@ -1,10 +1,10 @@
 # Getting Started
 
-This guide will walk you through setting up and using the `lib-common-data` library in your microservice.
+This guide will walk you through setting up and using the `fireflyframework-data` library in your microservice.
 
 ## Overview
 
-The `lib-common-data` library provides **two distinct architecture patterns** for building data processing microservices:
+The `fireflyframework-data` library provides **two distinct architecture patterns** for building data processing microservices:
 
 ### 1. **Data Jobs** - Orchestrated Workflow Pattern
 
@@ -91,7 +91,7 @@ For **fetching and integrating data** from third-party providers (credit bureaus
 | Use Case | Additional Requirements |
 |----------|------------------------|
 | **Async Data Jobs** | Access to orchestrator (Apache Airflow, AWS Step Functions, or mock for dev) |
-| **Sync Data Jobs** | None (all included in lib-common-data) |
+| **Sync Data Jobs** | None (all included in fireflyframework-data) |
 | **Data Enrichers** | Access to third-party provider APIs + API credentials |
 
 ---
@@ -106,8 +106,8 @@ Add the following to your `pom.xml`:
 <dependencies>
     <!-- Firefly Common Data Library -->
     <dependency>
-        <groupId>com.firefly</groupId>
-        <artifactId>lib-common-data</artifactId>
+        <groupId>org.fireflyframework</groupId>
+        <artifactId>fireflyframework-data</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </dependency>
     
@@ -168,7 +168,7 @@ firefly:
 logging:
   format: json  # or "plain" for human-readable logs
   level:
-    com.firefly: DEBUG
+    org.fireflyframework: DEBUG
     reactor: INFO
 ```
 
@@ -207,7 +207,7 @@ financial-data:
 logging:
   format: json
   level:
-    com.firefly: DEBUG
+    org.fireflyframework: DEBUG
     reactor: INFO
 ```
 
@@ -267,8 +267,8 @@ Create an orchestrator adapter (example for a mock/test implementation):
 ```java
 package com.example.myservice.orchestration;
 
-import com.firefly.common.data.orchestration.model.*;
-import com.firefly.common.data.orchestration.port.JobOrchestrator;
+import org.fireflyframework.data.orchestration.model.*;
+import org.fireflyframework.data.orchestration.port.JobOrchestrator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
@@ -378,7 +378,7 @@ Create a mapper to transform raw job results to your DTO:
 package com.example.myservice.mapper;
 
 import com.example.myservice.dto.CustomerDataDTO;
-import com.firefly.common.data.mapper.JobResultMapper;
+import org.fireflyframework.data.mapper.JobResultMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -414,13 +414,13 @@ public interface CustomerDataMapper extends JobResultMapper<Map<String, Object>,
 ```java
 package com.example.myservice.service;
 
-import com.firefly.common.data.model.*;
-import com.firefly.common.data.observability.JobMetricsService;
-import com.firefly.common.data.observability.JobTracingService;
-import com.firefly.common.data.orchestration.model.*;
-import com.firefly.common.data.orchestration.port.JobOrchestrator;
-import com.firefly.common.data.resiliency.ResiliencyDecoratorService;
-import com.firefly.common.data.service.AbstractResilientDataJobService;
+import org.fireflyframework.data.model.*;
+import org.fireflyframework.data.observability.JobMetricsService;
+import org.fireflyframework.data.observability.JobTracingService;
+import org.fireflyframework.data.orchestration.model.*;
+import org.fireflyframework.data.orchestration.port.JobOrchestrator;
+import org.fireflyframework.data.resiliency.ResiliencyDecoratorService;
+import org.fireflyframework.data.service.AbstractResilientDataJobService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -512,10 +512,10 @@ Only use this if you need full control and don't want the built-in features:
 ```java
 package com.example.myservice.service;
 
-import com.firefly.common.data.model.*;
-import com.firefly.common.data.orchestration.model.*;
-import com.firefly.common.data.orchestration.port.JobOrchestrator;
-import com.firefly.common.data.service.DataJobService;
+import org.fireflyframework.data.model.*;
+import org.fireflyframework.data.orchestration.model.*;
+import org.fireflyframework.data.orchestration.port.JobOrchestrator;
+import org.fireflyframework.data.service.DataJobService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -643,8 +643,8 @@ public class CustomerDataJobService implements DataJobService {
 ```java
 package com.example.myservice.controller;
 
-import com.firefly.common.data.controller.AbstractDataJobController;
-import com.firefly.common.data.service.DataJobService;
+import org.fireflyframework.data.controller.AbstractDataJobController;
+import org.fireflyframework.data.service.DataJobService;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -671,8 +671,8 @@ This is the simplest approach with built-in logging:
 ```java
 package com.example.myservice.controller;
 
-import com.firefly.common.data.controller.AbstractDataJobController;
-import com.firefly.common.data.service.DataJobService;
+import org.fireflyframework.data.controller.AbstractDataJobController;
+import org.fireflyframework.data.service.DataJobService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -713,15 +713,15 @@ Extend `AbstractResilientSyncDataJobService` for automatic observability and res
 ```java
 package com.example.myservice.service;
 
-import com.firefly.common.data.event.JobEventPublisher;
-import com.firefly.common.data.model.JobStageRequest;
-import com.firefly.common.data.model.JobStageResponse;
-import com.firefly.common.data.observability.JobMetricsService;
-import com.firefly.common.data.observability.JobTracingService;
-import com.firefly.common.data.persistence.service.JobAuditService;
-import com.firefly.common.data.persistence.service.JobExecutionResultService;
-import com.firefly.common.data.resiliency.ResiliencyDecoratorService;
-import com.firefly.common.data.service.AbstractResilientSyncDataJobService;
+import org.fireflyframework.data.event.JobEventPublisher;
+import org.fireflyframework.data.model.JobStageRequest;
+import org.fireflyframework.data.model.JobStageResponse;
+import org.fireflyframework.data.observability.JobMetricsService;
+import org.fireflyframework.data.observability.JobTracingService;
+import org.fireflyframework.data.persistence.service.JobAuditService;
+import org.fireflyframework.data.persistence.service.JobExecutionResultService;
+import org.fireflyframework.data.resiliency.ResiliencyDecoratorService;
+import org.fireflyframework.data.service.AbstractResilientSyncDataJobService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -790,8 +790,8 @@ Extend `AbstractSyncDataJobController`:
 ```java
 package com.example.myservice.controller;
 
-import com.firefly.common.data.controller.AbstractSyncDataJobController;
-import com.firefly.common.data.service.SyncDataJobService;
+import org.fireflyframework.data.controller.AbstractSyncDataJobController;
+import org.fireflyframework.data.service.SyncDataJobService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -917,15 +917,15 @@ public class FinancialDataResponse {
 ```java
 package com.example.myservice.enricher;
 
-import com.firefly.common.client.ServiceClient;
-import com.firefly.common.client.rest.RestClient;
-import com.firefly.common.data.enrichment.EnricherMetadata;
-import com.firefly.common.data.event.EnrichmentEventPublisher;
-import com.firefly.common.data.model.EnrichmentRequest;
-import com.firefly.common.data.observability.JobMetricsService;
-import com.firefly.common.data.observability.JobTracingService;
-import com.firefly.common.data.resiliency.ResiliencyDecoratorService;
-import com.firefly.common.data.service.DataEnricher;
+import org.fireflyframework.client.ServiceClient;
+import org.fireflyframework.client.rest.RestClient;
+import org.fireflyframework.data.enrichment.EnricherMetadata;
+import org.fireflyframework.data.event.EnrichmentEventPublisher;
+import org.fireflyframework.data.model.EnrichmentRequest;
+import org.fireflyframework.data.observability.JobMetricsService;
+import org.fireflyframework.data.observability.JobTracingService;
+import org.fireflyframework.data.resiliency.ResiliencyDecoratorService;
+import org.fireflyframework.data.service.DataEnricher;
 import com.example.myservice.dto.CompanyProfileDTO;
 import com.example.myservice.dto.FinancialDataResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -958,7 +958,7 @@ public class FinancialDataEnricher
             @Value("${financial-data.api-key}") String apiKey) {
         super(tracingService, metricsService, resiliencyService, eventPublisher, CompanyProfileDTO.class);
 
-        // Create REST client using lib-common-client
+        // Create REST client using fireflyframework-client
         this.financialDataClient = ServiceClient.rest("financial-data-provider")
             .baseUrl(baseUrl)
             .defaultHeader("Authorization", "Bearer " + apiKey)
@@ -1024,8 +1024,8 @@ Many providers require auxiliary operations before enrichment (search for IDs, v
 ```java
 package com.example.myservice.enricher.operation;
 
-import com.firefly.common.data.operation.AbstractEnricherOperation;
-import com.firefly.common.data.operation.EnricherOperation;
+import org.fireflyframework.data.operation.AbstractEnricherOperation;
+import org.fireflyframework.data.operation.EnricherOperation;
 import org.springframework.web.bind.annotation.RequestMethod;
 import reactor.core.publisher.Mono;
 
@@ -1303,7 +1303,7 @@ financial-data:
 logging:
   format: json
   level:
-    com.firefly: DEBUG
+    org.fireflyframework: DEBUG
     com.example.myservice: DEBUG
     reactor: INFO
 ```
@@ -1454,9 +1454,9 @@ Create a test class:
 ```java
 package com.example.myservice.service;
 
-import com.firefly.common.data.model.*;
-import com.firefly.common.data.orchestration.model.*;
-import com.firefly.common.data.orchestration.port.JobOrchestrator;
+import org.fireflyframework.data.model.*;
+import org.fireflyframework.data.orchestration.model.*;
+import org.fireflyframework.data.orchestration.port.JobOrchestrator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -1538,5 +1538,5 @@ Now that you have a basic implementation:
 
 ---
 
-**Congratulations!** 🎉 You've successfully set up a data processing microservice using `lib-common-data`.
+**Congratulations!** 🎉 You've successfully set up a data processing microservice using `fireflyframework-data`.
 
