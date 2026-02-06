@@ -82,7 +82,7 @@ public class EnrichmentRequest {
      * specific data subset to fetch from the provider.</p>
      */
     @NotNull(message = "Type is required")
-    @Schema(description = "Type of enrichment to perform", example = "company-profile", required = true)
+    @Schema(description = "Type of enrichment to perform", example = "company-profile", requiredMode = Schema.RequiredMode.REQUIRED)
     private String type;
     
     /**
@@ -93,7 +93,7 @@ public class EnrichmentRequest {
      * @see EnrichmentStrategy
      */
     @NotNull(message = "Enrichment strategy is required")
-    @Schema(description = "Strategy for applying enrichment data", example = "ENHANCE", required = true)
+    @Schema(description = "Strategy for applying enrichment data", example = "ENHANCE", requiredMode = Schema.RequiredMode.REQUIRED)
     private EnrichmentStrategy strategy;
     
     /**
@@ -116,7 +116,7 @@ public class EnrichmentRequest {
      * </ul>
      */
     @NotNull(message = "Parameters are required")
-    @Schema(description = "Provider-specific parameters", required = true)
+    @Schema(description = "Provider-specific parameters", requiredMode = Schema.RequiredMode.REQUIRED)
     private Map<String, Object> parameters;
     
     /**

@@ -80,7 +80,7 @@ public class EnrichmentApiRequest {
     @Schema(
         description = "Type of enrichment to perform",
         example = "company-profile",
-        required = true
+        requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String type;
 
@@ -112,7 +112,7 @@ public class EnrichmentApiRequest {
     @Schema(
         description = "Provider-specific parameters",
         example = "{\"companyId\": \"12345\", \"includeFinancials\": true}",
-        required = true
+        requiredMode = Schema.RequiredMode.REQUIRED
     )
     private Map<String, Object> params;
 
@@ -123,7 +123,7 @@ public class EnrichmentApiRequest {
     @Schema(
         description = "Tenant identifier (UUID) for multi-tenant routing",
         example = "550e8400-e29b-41d4-a716-446655440001",
-        required = true
+        requiredMode = Schema.RequiredMode.REQUIRED
     )
     private UUID tenantId;
 

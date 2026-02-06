@@ -357,16 +357,16 @@ public class GlobalOperationsController {
     @Schema(description = "Request to execute a provider operation")
     public static class OperationExecutionRequest {
         
-        @Schema(description = "Enrichment type", example = "credit-report", required = true)
+        @Schema(description = "Enrichment type", example = "credit-report", requiredMode = Schema.RequiredMode.REQUIRED)
         private String type;
         
-        @Schema(description = "Tenant ID", example = "550e8400-e29b-41d4-a716-446655440001", required = true)
+        @Schema(description = "Tenant ID", example = "550e8400-e29b-41d4-a716-446655440001", requiredMode = Schema.RequiredMode.REQUIRED)
         private UUID tenantId;
         
-        @Schema(description = "Operation ID", example = "search-company", required = true)
+        @Schema(description = "Operation ID", example = "search-company", requiredMode = Schema.RequiredMode.REQUIRED)
         private String operationId;
         
-        @Schema(description = "Operation request data", required = true)
+        @Schema(description = "Operation request data", requiredMode = Schema.RequiredMode.REQUIRED)
         private Object request;
         
         @Schema(description = "Optional request ID for tracing")

@@ -48,7 +48,7 @@ public class JobStartRequest {
     @Schema(
         description = "Input parameters for the job execution",
         example = "{\"customerId\": \"12345\", \"includeHistory\": true}",
-        required = true
+        requiredMode = Schema.RequiredMode.REQUIRED
     )
     private Map<String, Object> parameters;
 

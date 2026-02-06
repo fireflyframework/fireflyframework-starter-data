@@ -66,7 +66,7 @@ public class EnrichmentApiResponse {
     @Schema(
         description = "Whether the enrichment was successful",
         example = "true",
-        required = true
+        requiredMode = Schema.RequiredMode.REQUIRED
     )
     private boolean success;
     

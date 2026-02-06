@@ -231,7 +231,7 @@ public class JsonSchemaGenerator {
                         }
 
                         // Add required fields
-                        if (fieldSchema.required()) {
+                        if (fieldSchema.requiredMode() == Schema.RequiredMode.REQUIRED) {
                             if (!objectSchema.has("required")) {
                                 objectSchema.putArray("required");
                             }

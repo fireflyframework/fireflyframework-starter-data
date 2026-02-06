@@ -141,7 +141,7 @@ public final class DataSizeCalculator {
         int exp = (int) (Math.log(bytes) / Math.log(1024));
         String pre = "KMGTPE".charAt(exp - 1) + "";
         
-        return String.format(new Locale("es", "ES"), "%.1f %sB", bytes / Math.pow(1024, exp), pre);
+        return String.format(Locale.of("es", "ES"), "%.1f %sB", bytes / Math.pow(1024, exp), pre);
     }
 
     /**
