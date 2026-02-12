@@ -19,48 +19,46 @@ package org.fireflyframework.data.observability;
 import org.fireflyframework.data.config.JobOrchestrationProperties;
 import org.fireflyframework.data.model.JobStage;
 import org.fireflyframework.data.orchestration.model.JobExecutionStatus;
-import io.micrometer.core.instrument.Counter;
+import org.fireflyframework.observability.metrics.FireflyMetricsSupport;
 import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Timer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Service for recording job metrics.
  */
 @Service
 @Slf4j
-public class JobMetricsService {
+public class JobMetricsService extends FireflyMetricsSupport {
 
-    private final MeterRegistry meterRegistry;
     private final JobOrchestrationProperties properties;
     private final ConcurrentMap<String, Long> executionStartTimes = new ConcurrentHashMap<>();
+    private final AtomicInteger activeJobCount = new AtomicInteger(0);
 
     public JobMetricsService(MeterRegistry meterRegistry, JobOrchestrationProperties properties) {
-        this.meterRegistry = meterRegistry;
+        super(meterRegistry, "data");
         this.properties = properties;
+
+        gauge("active.count", activeJobCount, AtomicInteger::get);
     }
 
     /**
      * Records a job stage execution.
      */
     public void recordJobStageExecution(JobStage stage, String status, Duration duration) {
-        if (!properties.getObservability().isMetricsEnabled()) {
+        if (!isMetricsEnabled()) {
             return;
         }
 
-        String metricName = properties.getObservability().getMetricPrefix() + ".stage.execution";
-        
-        Timer.builder(metricName)
-                .tag("stage", stage.name())
-                .tag("status", status)
-                .tag("orchestrator", properties.getOrchestratorType())
-                .description("Job stage execution time")
-                .register(meterRegistry)
+        timer("stage.execution",
+                "stage", stage.name(),
+                "status", status,
+                "orchestrator", properties.getOrchestratorType())
                 .record(duration);
 
         log.debug("Recorded metric for stage {} with status {} and duration {}", stage, status, duration);
@@ -70,18 +68,14 @@ public class JobMetricsService {
      * Increments the job stage counter.
      */
     public void incrementJobStageCounter(JobStage stage, String status) {
-        if (!properties.getObservability().isMetricsEnabled()) {
+        if (!isMetricsEnabled()) {
             return;
         }
 
-        String metricName = properties.getObservability().getMetricPrefix() + ".stage.count";
-        
-        Counter.builder(metricName)
-                .tag("stage", stage.name())
-                .tag("status", status)
-                .tag("orchestrator", properties.getOrchestratorType())
-                .description("Job stage execution count")
-                .register(meterRegistry)
+        counter("stage.count",
+                "stage", stage.name(),
+                "status", status,
+                "orchestrator", properties.getOrchestratorType())
                 .increment();
 
         log.debug("Incremented counter for stage {} with status {}", stage, status);
@@ -91,17 +85,14 @@ public class JobMetricsService {
      * Records job execution start.
      */
     public void recordJobExecutionStart(String executionId) {
-        if (!properties.getObservability().isMetricsEnabled()) {
+        if (!isMetricsEnabled()) {
             return;
         }
 
         executionStartTimes.put(executionId, System.currentTimeMillis());
-        
-        String metricName = properties.getObservability().getMetricPrefix() + ".execution.started";
-        Counter.builder(metricName)
-                .tag("orchestrator", properties.getOrchestratorType())
-                .description("Job executions started")
-                .register(meterRegistry)
+
+        counter("execution.started",
+                "orchestrator", properties.getOrchestratorType())
                 .increment();
 
         log.debug("Recorded job execution start for {}", executionId);
@@ -111,32 +102,26 @@ public class JobMetricsService {
      * Records job execution completion.
      */
     public void recordJobExecutionCompletion(String executionId, JobExecutionStatus status) {
-        if (!properties.getObservability().isMetricsEnabled()) {
+        if (!isMetricsEnabled()) {
             return;
         }
 
         Long startTime = executionStartTimes.remove(executionId);
         if (startTime != null) {
             Duration duration = Duration.ofMillis(System.currentTimeMillis() - startTime);
-            
-            String metricName = properties.getObservability().getMetricPrefix() + ".execution.duration";
-            Timer.builder(metricName)
-                    .tag("status", status.name())
-                    .tag("orchestrator", properties.getOrchestratorType())
-                    .description("Job execution duration")
-                    .register(meterRegistry)
+
+            timer("execution.duration",
+                    "status", status.name(),
+                    "orchestrator", properties.getOrchestratorType())
                     .record(duration);
 
-            log.debug("Recorded job execution completion for {} with status {} and duration {}", 
+            log.debug("Recorded job execution completion for {} with status {} and duration {}",
                     executionId, status, duration);
         }
 
-        String counterName = properties.getObservability().getMetricPrefix() + ".execution.completed";
-        Counter.builder(counterName)
-                .tag("status", status.name())
-                .tag("orchestrator", properties.getOrchestratorType())
-                .description("Job executions completed")
-                .register(meterRegistry)
+        counter("execution.completed",
+                "status", status.name(),
+                "orchestrator", properties.getOrchestratorType())
                 .increment();
     }
 
@@ -144,17 +129,14 @@ public class JobMetricsService {
      * Records a job error.
      */
     public void recordJobError(JobStage stage, String errorType) {
-        if (!properties.getObservability().isMetricsEnabled()) {
+        if (!isMetricsEnabled()) {
             return;
         }
 
-        String metricName = properties.getObservability().getMetricPrefix() + ".error";
-        Counter.builder(metricName)
-                .tag("stage", stage.name())
-                .tag("error.type", errorType)
-                .tag("orchestrator", properties.getOrchestratorType())
-                .description("Job errors")
-                .register(meterRegistry)
+        counter("error",
+                "stage", stage.name(),
+                "error.type", errorType,
+                "orchestrator", properties.getOrchestratorType())
                 .increment();
 
         log.debug("Recorded error for stage {} with type {}", stage, errorType);
@@ -164,19 +146,16 @@ public class JobMetricsService {
      * Records mapper execution.
      */
     public void recordMapperExecution(String mapperName, boolean success, Duration duration) {
-        if (!properties.getObservability().isMetricsEnabled()) {
+        if (!isMetricsEnabled()) {
             return;
         }
 
-        String metricName = properties.getObservability().getMetricPrefix() + ".mapper.execution";
-        Timer.builder(metricName)
-                .tag("mapper", mapperName)
-                .tag("status", success ? "success" : "failure")
-                .description("Mapper execution time")
-                .register(meterRegistry)
+        timer("mapper.execution",
+                "mapper", mapperName,
+                "status", success ? "success" : "failure")
                 .record(duration);
 
-        log.debug("Recorded mapper execution for {} with status {} and duration {}", 
+        log.debug("Recorded mapper execution for {} with status {} and duration {}",
                 mapperName, success ? "success" : "failure", duration);
     }
 
@@ -184,20 +163,17 @@ public class JobMetricsService {
      * Records orchestrator operation.
      */
     public void recordOrchestratorOperation(String operation, boolean success, Duration duration) {
-        if (!properties.getObservability().isMetricsEnabled()) {
+        if (!isMetricsEnabled()) {
             return;
         }
 
-        String metricName = properties.getObservability().getMetricPrefix() + ".orchestrator.operation";
-        Timer.builder(metricName)
-                .tag("operation", operation)
-                .tag("status", success ? "success" : "failure")
-                .tag("orchestrator", properties.getOrchestratorType())
-                .description("Orchestrator operation time")
-                .register(meterRegistry)
+        timer("orchestrator.operation",
+                "operation", operation,
+                "status", success ? "success" : "failure",
+                "orchestrator", properties.getOrchestratorType())
                 .record(duration);
 
-        log.debug("Recorded orchestrator operation {} with status {} and duration {}", 
+        log.debug("Recorded orchestrator operation {} with status {} and duration {}",
                 operation, success ? "success" : "failure", duration);
     }
 
@@ -205,12 +181,11 @@ public class JobMetricsService {
      * Records active job count.
      */
     public void recordActiveJobCount(int count) {
-        if (!properties.getObservability().isMetricsEnabled()) {
+        if (!isMetricsEnabled()) {
             return;
         }
 
-        String metricName = properties.getObservability().getMetricPrefix() + ".active.count";
-        meterRegistry.gauge(metricName, count);
+        activeJobCount.set(count);
 
         log.debug("Recorded active job count: {}", count);
     }
@@ -231,48 +206,36 @@ public class JobMetricsService {
                                        long durationMillis,
                                        Integer fieldsEnriched,
                                        Double cost) {
-        if (!properties.getObservability().isMetricsEnabled()) {
+        if (!isMetricsEnabled()) {
             return;
         }
 
-        String metricPrefix = properties.getObservability().getMetricPrefix();
+        String status = success ? "success" : "failure";
 
-        // Record duration
-        Timer.builder(metricPrefix + ".enrichment.duration")
-                .tag("type", enrichmentType)
-                .tag("provider", providerName)
-                .tag("status", success ? "success" : "failure")
-                .description("Data enrichment operation duration")
-                .register(meterRegistry)
+        timer("enrichment.duration",
+                "type", enrichmentType,
+                "provider", providerName,
+                "status", status)
                 .record(Duration.ofMillis(durationMillis));
 
-        // Record count
-        Counter.builder(metricPrefix + ".enrichment.count")
-                .tag("type", enrichmentType)
-                .tag("provider", providerName)
-                .tag("status", success ? "success" : "failure")
-                .description("Data enrichment operation count")
-                .register(meterRegistry)
+        counter("enrichment.count",
+                "type", enrichmentType,
+                "provider", providerName,
+                "status", status)
                 .increment();
 
-        // Record fields enriched
         if (fieldsEnriched != null && fieldsEnriched > 0) {
-            meterRegistry.gauge(metricPrefix + ".enrichment.fields",
-                    io.micrometer.core.instrument.Tags.of(
-                            "type", enrichmentType,
-                            "provider", providerName
-                    ),
-                    fieldsEnriched);
+            distributionSummary("enrichment.fields",
+                    "type", enrichmentType,
+                    "provider", providerName)
+                    .record(fieldsEnriched);
         }
 
-        // Record cost
         if (cost != null && cost > 0) {
-            meterRegistry.gauge(metricPrefix + ".enrichment.cost",
-                    io.micrometer.core.instrument.Tags.of(
-                            "type", enrichmentType,
-                            "provider", providerName
-                    ),
-                    cost);
+            distributionSummary("enrichment.cost",
+                    "type", enrichmentType,
+                    "provider", providerName)
+                    .record(cost);
         }
 
         log.debug("Recorded enrichment metrics: type={}, provider={}, success={}, duration={}ms",
@@ -291,22 +254,21 @@ public class JobMetricsService {
                                      String providerName,
                                      String errorType,
                                      long durationMillis) {
-        if (!properties.getObservability().isMetricsEnabled()) {
+        if (!isMetricsEnabled()) {
             return;
         }
 
-        String metricPrefix = properties.getObservability().getMetricPrefix();
-
-        Counter.builder(metricPrefix + ".enrichment.errors")
-                .tag("type", enrichmentType)
-                .tag("provider", providerName)
-                .tag("error_type", errorType)
-                .description("Data enrichment errors")
-                .register(meterRegistry)
+        counter("enrichment.errors",
+                "type", enrichmentType,
+                "provider", providerName,
+                "error.type", errorType)
                 .increment();
 
         log.debug("Recorded enrichment error: type={}, provider={}, errorType={}",
                 enrichmentType, providerName, errorType);
     }
-}
 
+    private boolean isMetricsEnabled() {
+        return isEnabled() && properties.getObservability().isMetricsEnabled();
+    }
+}
