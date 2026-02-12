@@ -17,21 +17,37 @@
 package org.fireflyframework.data.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.observation.ObservationRegistry;
 import org.fireflyframework.cache.core.CacheAdapter;
 import org.fireflyframework.data.cache.EnrichmentCacheKeyGenerator;
 import org.fireflyframework.data.cache.EnrichmentCacheService;
 import org.fireflyframework.data.cache.OperationCacheService;
+import org.fireflyframework.data.event.EnrichmentEventPublisher;
+import org.fireflyframework.data.event.JobEventPublisher;
+import org.fireflyframework.data.event.OperationEventPublisher;
+import org.fireflyframework.data.health.JobOrchestratorHealthIndicator;
+import org.fireflyframework.data.mapper.JobResultMapper;
+import org.fireflyframework.data.mapper.JobResultMapperRegistry;
+import org.fireflyframework.data.observability.JobMetricsService;
+import org.fireflyframework.data.observability.JobTracingService;
+import org.fireflyframework.data.operation.schema.JsonSchemaGenerator;
+import org.fireflyframework.data.orchestration.port.JobOrchestrator;
 import org.fireflyframework.data.service.DataEnricher;
 import org.fireflyframework.data.service.DataEnricherRegistry;
+import org.fireflyframework.data.service.DataJobDiscoveryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Auto-configuration for data enrichment components.
@@ -42,10 +58,13 @@ import java.util.List;
  *   <li>Data enricher registry for discovering enrichers</li>
  *   <li>Enrichment cache service (when cache is enabled and CacheAdapter is available)</li>
  *   <li>Cache key generator for tenant-isolated caching</li>
+ *   <li>Job metrics and tracing services</li>
+ *   <li>Event publishers for enrichment, operation, and job events</li>
+ *   <li>Job result mapper registry</li>
+ *   <li>Job orchestrator health indicator</li>
+ *   <li>Data job discovery service</li>
+ *   <li>JSON schema generator</li>
  * </ul>
- *
- * <p>Note: EnrichmentEventPublisher is auto-discovered via @Service annotation
- * and is conditionally created based on firefly.data.enrichment.publish-events property.</p>
  *
  * <p>The configuration is activated when:</p>
  * <ul>
@@ -76,13 +95,12 @@ import java.util.List;
     havingValue = "true",
     matchIfMissing = true
 )
-@ComponentScan(basePackages = "org.fireflyframework.data")
 public class DataEnrichmentAutoConfiguration {
-    
+
     public DataEnrichmentAutoConfiguration() {
         log.info("Initializing Data Enrichment Auto-Configuration");
     }
-    
+
     /**
      * Creates the data enricher registry bean.
      *
@@ -165,5 +183,134 @@ public class DataEnrichmentAutoConfiguration {
             DataEnrichmentProperties properties) {
         log.info("Creating OperationCacheService bean with cache type: {}", cacheManager.getCacheType());
         return new OperationCacheService(cacheManager, objectMapper, properties);
+    }
+
+    /**
+     * Creates the job metrics service bean.
+     *
+     * <p>This service records job-related metrics using Micrometer.</p>
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public JobMetricsService jobMetricsService(MeterRegistry meterRegistry,
+                                               JobOrchestrationProperties properties) {
+        log.info("Creating JobMetricsService bean");
+        return new JobMetricsService(meterRegistry, properties);
+    }
+
+    /**
+     * Creates the job tracing service bean.
+     *
+     * <p>This service adds distributed tracing to job operations.</p>
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public JobTracingService jobTracingService(ObservationRegistry observationRegistry,
+                                               JobOrchestrationProperties properties) {
+        log.info("Creating JobTracingService bean");
+        return new JobTracingService(observationRegistry, properties);
+    }
+
+    /**
+     * Creates the JSON schema generator bean.
+     *
+     * <p>This component generates JSON Schemas and example objects from Java classes.</p>
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public JsonSchemaGenerator jsonSchemaGenerator(ObjectMapper objectMapper) {
+        log.info("Creating JsonSchemaGenerator bean");
+        return new JsonSchemaGenerator(objectMapper);
+    }
+
+    /**
+     * Creates the job event publisher bean.
+     *
+     * <p>This service publishes job lifecycle events through Spring's event mechanism.</p>
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public JobEventPublisher jobEventPublisher(ApplicationEventPublisher eventPublisher,
+                                               JobOrchestrationProperties properties) {
+        log.info("Creating JobEventPublisher bean");
+        return new JobEventPublisher(eventPublisher, properties);
+    }
+
+    /**
+     * Creates the enrichment event publisher bean.
+     *
+     * <p>This service publishes enrichment lifecycle events through Spring's event mechanism.
+     * It is only created when {@code firefly.data.enrichment.publish-events} is true (default).</p>
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(
+        prefix = "firefly.data.enrichment",
+        name = "publish-events",
+        havingValue = "true",
+        matchIfMissing = true
+    )
+    public EnrichmentEventPublisher enrichmentEventPublisher(ApplicationEventPublisher eventPublisher) {
+        log.info("Creating EnrichmentEventPublisher bean");
+        return new EnrichmentEventPublisher(eventPublisher);
+    }
+
+    /**
+     * Creates the operation event publisher bean.
+     *
+     * <p>This service publishes provider operation lifecycle events through Spring's event mechanism.
+     * It is only created when {@code firefly.data.enrichment.operations.publish-events} is true (default).</p>
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(
+        prefix = "firefly.data.enrichment.operations",
+        name = "publish-events",
+        havingValue = "true",
+        matchIfMissing = true
+    )
+    public OperationEventPublisher operationEventPublisher(ApplicationEventPublisher eventPublisher) {
+        log.info("Creating OperationEventPublisher bean");
+        return new OperationEventPublisher(eventPublisher);
+    }
+
+    /**
+     * Creates the data job discovery service bean.
+     *
+     * <p>This service discovers and logs all registered DataJobs at application startup.
+     * It uses {@code @EventListener} to react to {@code ApplicationReadyEvent}.</p>
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public DataJobDiscoveryService dataJobDiscoveryService(ApplicationContext applicationContext) {
+        log.info("Creating DataJobDiscoveryService bean");
+        return new DataJobDiscoveryService(applicationContext);
+    }
+
+    /**
+     * Creates the job result mapper registry bean.
+     *
+     * <p>This registry automatically discovers all {@link JobResultMapper} beans and makes them
+     * available for the RESULT stage transformation.</p>
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public JobResultMapperRegistry jobResultMapperRegistry(List<JobResultMapper<?, ?>> mappers) {
+        log.info("Creating JobResultMapperRegistry bean with {} mapper(s)", mappers.size());
+        return new JobResultMapperRegistry(mappers);
+    }
+
+    /**
+     * Creates the job orchestrator health indicator bean.
+     *
+     * <p>This health indicator reports the status of the job orchestrator.</p>
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public JobOrchestratorHealthIndicator jobOrchestratorHealthIndicator(
+            Optional<JobOrchestrator> orchestrator,
+            JobOrchestrationProperties properties) {
+        log.info("Creating JobOrchestratorHealthIndicator bean");
+        return new JobOrchestratorHealthIndicator(orchestrator, properties);
     }
 }

@@ -17,9 +17,7 @@
 package org.fireflyframework.data.event;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -27,10 +25,10 @@ import java.util.Map;
 
 /**
  * Service for publishing provider operation lifecycle events through Spring's event mechanism.
- * 
+ *
  * <p>These events can be consumed by EDA components or other parts of the system
  * for observability, auditing, and monitoring purposes.</p>
- * 
+ *
  * <p><b>Example Usage:</b></p>
  * <pre>{@code
  * operationEventPublisher.publishOperationStarted(
@@ -41,14 +39,7 @@ import java.util.Map;
  * );
  * }</pre>
  */
-@Service
 @Slf4j
-@ConditionalOnProperty(
-    prefix = "firefly.data.enrichment.operations",
-    name = "publish-events",
-    havingValue = "true",
-    matchIfMissing = true
-)
 public class OperationEventPublisher {
     
     private final ApplicationEventPublisher eventPublisher;

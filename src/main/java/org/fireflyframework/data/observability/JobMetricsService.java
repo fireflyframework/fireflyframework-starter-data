@@ -22,7 +22,6 @@ import org.fireflyframework.data.orchestration.model.JobExecutionStatus;
 import org.fireflyframework.observability.metrics.FireflyMetricsSupport;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,7 +31,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Service for recording job metrics.
  */
-@Service
 @Slf4j
 public class JobMetricsService extends FireflyMetricsSupport {
 

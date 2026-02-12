@@ -21,7 +21,6 @@ import org.fireflyframework.data.orchestration.port.JobOrchestrator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.ReactiveHealthIndicator;
-import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -33,7 +32,6 @@ import java.util.Optional;
 /**
  * Health indicator for job orchestrator.
  */
-@Component
 @Slf4j
 public class JobOrchestratorHealthIndicator implements ReactiveHealthIndicator {
 

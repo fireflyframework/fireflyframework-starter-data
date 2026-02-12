@@ -23,7 +23,6 @@ import org.fireflyframework.data.model.JobStageResponse;
 import org.fireflyframework.data.orchestration.model.JobExecutionStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -32,11 +31,10 @@ import java.util.Map;
 /**
  * Service for publishing job lifecycle events through Spring's event mechanism.
  * These events can be consumed by EDA components or other parts of the system.
- * 
+ *
  * This service is automatically configured when job orchestration is enabled
  * and publish-job-events is set to true.
  */
-@Service
 @Slf4j
 public class JobEventPublisher {
 

@@ -21,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -30,15 +29,14 @@ import java.util.Map;
 
 /**
  * Service that discovers and logs all registered DataJobs at application startup.
- * 
+ *
  * This service automatically detects:
  * - All DataJobService implementations
  * - All DataJobController implementations
  * - Job metadata (name, description, orchestrator type, job definition)
- * 
+ *
  * The information is logged at INFO level when the application is ready.
  */
-@Service
 @Slf4j
 public class DataJobDiscoveryService {
 

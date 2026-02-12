@@ -21,7 +21,6 @@ import org.fireflyframework.data.model.JobStage;
 import io.micrometer.observation.Observation;
 import io.micrometer.observation.ObservationRegistry;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
@@ -30,7 +29,6 @@ import java.util.function.Supplier;
 /**
  * Service for adding distributed tracing to job operations.
  */
-@Service
 @Slf4j
 public class JobTracingService {
 

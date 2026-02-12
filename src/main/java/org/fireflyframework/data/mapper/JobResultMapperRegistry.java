@@ -17,7 +17,6 @@
 package org.fireflyframework.data.mapper;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -55,7 +54,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * }
  * </pre>
  */
-@Component
 @Slf4j
 public class JobResultMapperRegistry {
 

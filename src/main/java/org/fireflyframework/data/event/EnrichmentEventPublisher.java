@@ -19,9 +19,7 @@ package org.fireflyframework.data.event;
 import org.fireflyframework.data.model.EnrichmentRequest;
 import org.fireflyframework.data.model.EnrichmentResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -29,18 +27,11 @@ import java.util.Map;
 
 /**
  * Service for publishing enrichment lifecycle events through Spring's event mechanism.
- * 
+ *
  * <p>These events can be consumed by EDA components or other parts of the system
  * for observability, auditing, and monitoring purposes.</p>
  */
-@Service
 @Slf4j
-@ConditionalOnProperty(
-    prefix = "firefly.data.enrichment",
-    name = "publish-events",
-    havingValue = "true",
-    matchIfMissing = true
-)
 public class EnrichmentEventPublisher {
     
     private final ApplicationEventPublisher eventPublisher;
