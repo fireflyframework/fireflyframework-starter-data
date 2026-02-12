@@ -145,6 +145,11 @@ public class JobTracingService {
 
     /**
      * Adds custom tags to the current observation.
+     * <p>
+     * <b>Note:</b> This method uses {@link ObservationRegistry#getCurrentObservation()} which is
+     * ThreadLocal-based. It works correctly when called from the same thread where the observation
+     * was started (e.g., within {@code traceJobOperationSync}). For reactive chains, prefer passing
+     * the Observation directly or using Reactor Context.
      */
     public void addTags(Map<String, String> tags) {
         if (!properties.getObservability().isTracingEnabled()) {
@@ -153,14 +158,19 @@ public class JobTracingService {
 
         Observation currentObservation = observationRegistry.getCurrentObservation();
         if (currentObservation != null) {
-            tags.forEach((key, value) -> 
+            tags.forEach((key, value) ->
                 currentObservation.highCardinalityKeyValue(key, value)
             );
+        } else {
+            log.debug("No current observation found when adding tags - context may have switched threads");
         }
     }
 
     /**
      * Records an event in the current observation.
+     * <p>
+     * <b>Note:</b> This method uses {@link ObservationRegistry#getCurrentObservation()} which is
+     * ThreadLocal-based. For reactive chains, prefer using the Observation from Reactor Context.
      */
     public void recordEvent(String eventName, String eventDescription) {
         if (!properties.getObservability().isTracingEnabled()) {
@@ -170,6 +180,8 @@ public class JobTracingService {
         Observation currentObservation = observationRegistry.getCurrentObservation();
         if (currentObservation != null) {
             currentObservation.event(Observation.Event.of(eventName, eventDescription));
+        } else {
+            log.debug("No current observation found when recording event '{}' - context may have switched threads", eventName);
         }
     }
 

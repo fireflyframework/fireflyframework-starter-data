@@ -2,51 +2,26 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 
-    <!-- Property for log format (default: json, can be overridden with FIREFLY_LOG_FORMAT=text) -->
-    <property name="LOG_FORMAT" value="${FIREFLY_LOG_FORMAT:-json}"/>
+    <!-- Shared Firefly observability logging configuration -->
+    <include resource="logback-firefly.xml"/>
 
-    <!-- Console Appender with MDC fields (text format) -->
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} [traceId=%X{traceId:-N/A} spanId=%X{spanId:-N/A} requestId=%X{requestId:-N/A} eventId=%X{eventId:-N/A} provider=%X{provider:-N/A}] - %msg%n</pattern>
-        </encoder>
-    </appender>
-
-    <!-- JSON Appender for production -->
-    <appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-            <includeMdcKeyName>traceId</includeMdcKeyName>
-            <includeMdcKeyName>spanId</includeMdcKeyName>
-            <includeMdcKeyName>requestId</includeMdcKeyName>
-            <includeMdcKeyName>eventId</includeMdcKeyName>
-            <includeMdcKeyName>provider</includeMdcKeyName>
-        </encoder>
-    </appender>
-
-    <!-- Root Logger - uses JSON by default, CONSOLE if FIREFLY_LOG_FORMAT=text -->
+    <!-- Root Logger - uses shared FIREFLY_ASYNC appender from logback-firefly.xml -->
     <root level="INFO">
-        <if condition='property("LOG_FORMAT").equals("text")'>
-            <then>
-                <appender-ref ref="CONSOLE" />
-            </then>
-            <else>
-                <appender-ref ref="JSON" />
-            </else>
-        </if>
+        <appender-ref ref="FIREFLY_ASYNC"/>
     </root>
 
     <!-- Application Loggers -->
-    <logger name="org.fireflyframework.webhooks" level="DEBUG" />
-    <logger name="org.fireflyframework.eda" level="DEBUG" />
-    <logger name="org.fireflyframework.cache" level="INFO" />
+    <logger name="org.fireflyframework.data" level="DEBUG"/>
+    <logger name="org.fireflyframework.eda" level="DEBUG"/>
+    <logger name="org.fireflyframework.cache" level="INFO"/>
 
     <!-- Resilience4j Loggers -->
-    <logger name="io.github.resilience4j" level="INFO" />
+    <logger name="io.github.resilience4j" level="INFO"/>
 
     <!-- Spring Loggers -->
-    <logger name="org.springframework" level="INFO" />
-    <logger name="org.springframework.web" level="INFO" />
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="org.springframework.web" level="INFO"/>
 
     <!-- Kafka Loggers -->
-    <logger name="org.apache.kafka" level="WARN" />
+    <logger name="org.apache.kafka" level="WARN"/>
 </configuration>
