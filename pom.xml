@@ -50,6 +50,13 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
+        <!-- Firefly Kernel (foundational: exceptions, shared abstractions) -->
+        <dependency>
+            <groupId>org.fireflyframework</groupId>
+            <artifactId>fireflyframework-kernel</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!-- Observability (metrics, tracing, health, structured logging) -->
         <dependency>
             <groupId>org.fireflyframework</groupId>

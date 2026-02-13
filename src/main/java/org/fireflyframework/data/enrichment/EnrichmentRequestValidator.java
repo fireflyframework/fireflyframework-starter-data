@@ -18,6 +18,7 @@ package org.fireflyframework.data.enrichment;
 
 import org.fireflyframework.data.model.EnrichmentRequest;
 import org.fireflyframework.data.model.EnrichmentStrategy;
+import org.fireflyframework.kernel.exception.FireflyException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -224,14 +225,14 @@ public class EnrichmentRequestValidator {
     /**
      * Exception thrown when enrichment request validation fails.
      */
-    public static class EnrichmentValidationException extends RuntimeException {
+    public static class EnrichmentValidationException extends FireflyException {
         private final List<String> errors;
-        
+
         public EnrichmentValidationException(String message, List<String> errors) {
             super(message);
             this.errors = new ArrayList<>(errors);
         }
-        
+
         public List<String> getErrors() {
             return new ArrayList<>(errors);
         }

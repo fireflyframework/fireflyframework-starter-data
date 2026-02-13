@@ -18,6 +18,7 @@ package org.fireflyframework.data.enrichment;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.fireflyframework.data.model.EnrichmentStrategy;
+import org.fireflyframework.kernel.exception.FireflyException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
@@ -293,11 +294,11 @@ public class EnrichmentStrategyApplier {
     /**
      * Exception thrown when strategy application fails.
      */
-    public static class EnrichmentStrategyException extends RuntimeException {
+    public static class EnrichmentStrategyException extends FireflyException {
         public EnrichmentStrategyException(String message) {
             super(message);
         }
-        
+
         public EnrichmentStrategyException(String message, Throwable cause) {
             super(message, cause);
         }
