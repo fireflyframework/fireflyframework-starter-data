@@ -27,7 +27,9 @@ import io.micrometer.tracing.Tracer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 
@@ -38,6 +40,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
  * Auto-configuration for observability features including tracing, metrics, and health checks.
  */
 @AutoConfiguration
+@AutoConfigureBefore(DataEnrichmentAutoConfiguration.class)
 @ConditionalOnProperty(prefix = "firefly.data.orchestration", name = "enabled", havingValue = "true", matchIfMissing = true)
 @Slf4j
 public class ObservabilityAutoConfiguration {
@@ -48,6 +51,7 @@ public class ObservabilityAutoConfiguration {
     @ConditionalOnMissingBean
     @Bean
     @ConditionalOnClass(ObservationRegistry.class)
+    @ConditionalOnMissingBean(JobTracingService.class)
     @ConditionalOnProperty(prefix = "firefly.data.orchestration.observability", name = "tracing-enabled", havingValue = "true", matchIfMissing = true)
     public JobTracingService jobTracingService(ObservationRegistry observationRegistry,
                                                JobOrchestrationProperties properties,
@@ -69,6 +73,7 @@ public class ObservabilityAutoConfiguration {
     @ConditionalOnMissingBean
     @Bean
     @ConditionalOnClass(MeterRegistry.class)
+    @ConditionalOnMissingBean(JobMetricsService.class)
     @ConditionalOnProperty(prefix = "firefly.data.orchestration.observability", name = "metrics-enabled", havingValue = "true", matchIfMissing = true)
     public JobMetricsService jobMetricsService(MeterRegistry meterRegistry,
                                                JobOrchestrationProperties properties) {
@@ -82,6 +87,7 @@ public class ObservabilityAutoConfiguration {
      */
     @ConditionalOnMissingBean
     @Bean
+    @ConditionalOnMissingBean(JobOrchestratorHealthIndicator.class)
     @ConditionalOnEnabledHealthIndicator("jobOrchestrator")
     @ConditionalOnProperty(prefix = "firefly.data.orchestration.health-check", name = "enabled", havingValue = "true", matchIfMissing = true)
     public JobOrchestratorHealthIndicator jobOrchestratorHealthIndicator(
