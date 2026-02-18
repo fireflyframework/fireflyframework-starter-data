@@ -64,7 +64,7 @@ The starter features abstract controller and service base classes that eliminate
 <dependency>
     <groupId>org.fireflyframework</groupId>
     <artifactId>fireflyframework-starter-data</artifactId>
-    <version>26.02.04</version>
+    <version>26.02.05</version>
 </dependency>
 ```
 
