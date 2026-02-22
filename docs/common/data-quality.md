@@ -1,5 +1,11 @@
 # Data Quality
 
+Data that comes back from external enrichment providers or transformation pipelines is not always correct, complete, or consistent. A field might be null when it should not be, an email address might be malformed, or a numeric score might fall outside an expected range. If you persist or act on bad data without catching these issues, the problems compound downstream and become much harder to trace.
+
+The data quality framework in `fireflyframework-starter-data` gives you a structured way to define validation rules and run them against your data at any point in the pipeline. You express each concern -- "email must not be null," "score must be between 0 and 1" -- as an individual rule with a severity level. The framework's engine evaluates all applicable rules and produces a report telling you exactly what passed, what failed, and how severe each failure is.
+
+A common pattern is to use quality rules as a "gate" between enrichment and persistence: enrich the data, validate it, and only proceed if the critical checks pass. The framework supports both fail-fast evaluation (stop on the first critical failure) and collect-all evaluation (run every rule and report everything). Quality events are also published through Spring's event system, so you can wire up audit logging, alerting, or dashboards without coupling them to your validation logic.
+
 This document provides a comprehensive guide to the data quality framework in `fireflyframework-starter-data`, covering rule definition, engine evaluation, built-in rules, custom rules, and integration with Spring events.
 
 ## Table of Contents

@@ -35,7 +35,7 @@ Key features:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    fireflyframework-starter-data (Core)                   │
+│            fireflyframework-starter-data (Core)             │
 │                                                             │
 │  ┌──────────────────────────────────────────────────────┐   │
 │  │              Domain Models                           │   │
@@ -512,7 +512,7 @@ public interface R2dbcJobExecutionResultEntityRepository extends ReactiveCrudRep
 
 ### Step 6: Create Repository Adapters
 
-Implement the port interfaces with R2DBC adapters. See the complete example in the [examples directory](../examples/r2dbc-persistence-adapter).
+Implement the port interfaces with R2DBC adapters.
 
 Key points for adapter implementation:
 
@@ -763,7 +763,4 @@ public class R2dbcJobAuditRepositoryAdapter implements JobAuditRepository {
 
 ---
 
-For complete working examples, see:
-- [R2DBC PostgreSQL Adapter Example](../examples/r2dbc-persistence-adapter)
-- [MongoDB Reactive Adapter Example](../examples/mongodb-persistence-adapter)
-- [Redis Caching Adapter Example](../examples/redis-cache-adapter)
+For complete working examples, refer to the adapters and entity repositories described in the implementation guide above.

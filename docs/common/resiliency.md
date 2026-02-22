@@ -1,5 +1,11 @@
 # Resiliency
 
+When your application depends on external data providers and orchestration services, failures are not a matter of "if" but "when." A provider might become temporarily unreachable, respond slowly under load, or start returning errors for a percentage of requests. Without protection, these failures can cascade through your system -- one slow provider ties up threads, backs up request queues, and eventually brings down components that have nothing to do with the original problem.
+
+Resiliency patterns are well-established techniques for containing and recovering from these kinds of failures. A circuit breaker stops sending requests to a service that is clearly failing, giving it time to recover instead of piling on more load. Retries handle transient errors by automatically re-attempting an operation. Rate limiters prevent your application from overwhelming a provider with too many requests. Bulkheads isolate concurrent calls so that one misbehaving provider cannot consume all available resources.
+
+The `fireflyframework-starter-data` library integrates these patterns through Resilience4j, wiring them into the reactive (Project Reactor) pipeline so they work naturally with `Mono` and `Flux` return types. Each pattern can be enabled or disabled independently, and you can configure them globally or per provider -- for example, giving a slower provider a longer timeout and a lower circuit-breaker threshold than a fast, highly reliable one. The `AbstractResilientDataJobService` base class applies all configured patterns automatically, so in most cases you get resiliency without writing any defensive code yourself.
+
 This document describes the resiliency patterns implemented in fireflyframework-starter-data using Resilience4j.
 
 ## Table of Contents

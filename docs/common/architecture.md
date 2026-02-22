@@ -57,11 +57,11 @@ The `fireflyframework-starter-data` starter is built on **Hexagonal Architecture
 │  │                                                    │         │
 │  │              PORT INTERFACES                       │         │
 │  │  ┌─────────────────────────────────────────────┐   │         │
-│  │  │ DataJobController (REST API Port)            │   │         │
-│  │  │ JobOrchestrator (Orchestration Port)         │   │         │
-│  │  │ EventPublisher (EDA Port)                    │   │         │
-│  │  │ OrchestrationEventPublisher (Orch. Port)     │   │         │
-│  │  └──────────────────────────────────────────────┘   │         │
+│  │  │ DataJobController (REST API Port)           │   │         │
+│  │  │ JobOrchestrator (Orchestration Port)        │   │         │
+│  │  │ EventPublisher (EDA Port)                   │   │         │
+│  │  │ OrchestrationEventPublisher (Orch. Port)    │   │         │
+│  │  └─────────────────────────────────────────────┘   │         │
 │  │                                                    │         │
 │  │              DOMAIN CORE                           │         │
 │  │  ┌─────────────────────────────────────────────┐   │         │
@@ -73,7 +73,7 @@ The `fireflyframework-starter-data` starter is built on **Hexagonal Architecture
 │  │                                                    │         │
 │  └────────────────────────────────────────────────────┘         │
 │                                                                 │
-│                    fireflyframework-starter-data                   │
+│                  fireflyframework-starter-data                  │
 └─────────────────────────────────────────────────────────────────┘
 ```
 

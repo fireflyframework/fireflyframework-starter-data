@@ -1,5 +1,11 @@
 # GenAI Bridge
 
+The Firefly Framework spans two language ecosystems: a Java-based data starter (`fireflyframework-starter-data`) that handles data enrichment, job orchestration, and provider management, and a Python-based GenAI metaframework (`fireflyframework-genai`) that builds AI agents and pipelines on top of Pydantic AI. These two systems are designed to work together, but they run in different processes and different languages. The "bridge" is the glue between them.
+
+The `fireflyframework-genai-data` Python package provides that bridge. It is a lightweight Python library that gives AI agents and GenAI pipelines direct access to the data starter's capabilities over HTTP. Instead of reimplementing enrichment logic or job management in Python, you call the Java service's REST API through a typed async client, and the bridge package wraps those calls into tools, pipeline steps, and middleware that plug natively into the GenAI framework.
+
+In practice, this means an AI agent can enrich a company record, start a batch data job, check its status, and validate the results through quality gates -- all without leaving the Python agent framework. The bridge also provides lineage-tracking middleware so that every agent interaction with the data starter is recorded for observability and debugging. If you are building AI-powered workflows that need access to enterprise data operations, this package is how the two halves of the framework connect.
+
 This document provides a comprehensive guide to the `fireflyframework-genai-data` Python package, which bridges the Java `fireflyframework-starter-data` service with the Python `fireflyframework-genai` metaframework. It covers the HTTP client, agent tools, pipeline steps, middleware, and agent templates.
 
 ## Table of Contents

@@ -678,7 +678,7 @@ Add `fireflyframework-starter-data` to your `pom.xml`:
 <dependency>
   <groupId>org.fireflyframework</groupId>
   <artifactId>fireflyframework-starter-data</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>26.02.06</version>
 </dependency>
 
 <!-- Spring Boot WebFlux (required for reactive support) -->
@@ -885,15 +885,13 @@ curl http://localhost:8080/api/v1/customer-import/exec-abc-123/check
 curl http://localhost:8080/api/v1/customer-import/exec-abc-123/result
 ```
 
-That's it! You now have a fully functional async data job with:
+That’s it! You now have a fully functional async data job with:
 - Standardized REST API
 - Distributed tracing
 - Metrics collection
 - Circuit breaker and retry
 - Audit trail
 - Event publishing
-
-That’s it. You now have standardized endpoints (see API Endpoints below).
 
 ---
 

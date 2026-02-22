@@ -1,5 +1,11 @@
 # Data Lineage
 
+When data flows through multiple enrichment providers, transformation steps, and collection jobs, it can be surprisingly difficult to answer a simple question: *where did this value come from?* Data lineage is the practice of recording that history -- tracking every operation that touched a data record, who performed it, when it happened, and what changed.
+
+This matters for several practical reasons. During debugging, lineage lets you pinpoint exactly which enricher introduced a bad value instead of guessing across a dozen possible sources. For compliance and audit purposes, many regulated industries require a clear provenance trail showing how data was produced and modified. And for day-to-day observability, lineage records can be correlated with distributed traces to give you a complete picture of data flow through your system.
+
+In `fireflyframework-starter-data`, lineage tracking is built around a simple port-and-adapter pattern. You interact with a `LineageTracker` interface to record and query lineage events, and the framework provides a default in-memory implementation out of the box. For production use, you swap in your own implementation backed by a database, event log, or graph store -- the rest of your code stays the same.
+
 This document provides a comprehensive guide to the data lineage tracking framework in `fireflyframework-starter-data`, covering the `LineageTracker` port, `LineageRecord` model, the default in-memory implementation, and guidance for production deployments.
 
 ## Table of Contents

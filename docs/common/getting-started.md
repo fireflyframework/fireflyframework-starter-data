@@ -63,7 +63,7 @@ For **fetching and integrating data** from third-party providers (credit bureaus
 
 > **Looking for a complete step-by-step guide?**
 > - For **Data Jobs**: See [Data Jobs — Complete Guide](../data-jobs/guide.md)
-> - For **Data Enrichers**: See [Step-by-Step Guide: Data Enricher Microservice](../data-enrichers/enricher-microservice-guide.md) with multi-module Maven structure
+> - For **Data Enrichers**: See [Step-by-Step Guide: Data Enricher Microservice](../data-enrichers/guide.md) with multi-module Maven structure
 
 ## Table of Contents
 
@@ -81,7 +81,7 @@ For **fetching and integrating data** from third-party providers (credit bureaus
 ## Prerequisites
 
 **Required for all use cases:**
-- Java 21+ installed
+- Java 25 installed
 - Maven 3.8+ or Gradle 7+
 - Spring Boot 3.x knowledge
 - Reactive programming familiarity (Project Reactor)
@@ -108,7 +108,7 @@ Add the following to your `pom.xml`:
     <dependency>
         <groupId>org.fireflyframework</groupId>
         <artifactId>fireflyframework-starter-data</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>26.02.06</version>
     </dependency>
     
     <!-- Spring Boot WebFlux (if not already included) -->
@@ -1169,7 +1169,7 @@ GET /api/v1/enrichment/health?type=company-profile
 - **Observability** - Tracing, metrics automatically
 - **Resiliency** - Circuit breaker, retry automatically
 
-> **See [Simplified Architecture Guide](../data-enrichers/SIMPLIFIED-ARCHITECTURE.md)** for complete details.
+> **See [Simplified Architecture Guide](../common/architecture.md)** for complete details.
 
 ---
 

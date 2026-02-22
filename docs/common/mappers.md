@@ -1,5 +1,11 @@
 # MapStruct Mappers
 
+When a data job finishes, its raw results typically arrive as untyped `Map<String, Object>` structures -- essentially bags of key-value pairs with provider-specific field names. Your application code, on the other hand, works with typed Java objects: `CustomerDTO`, `OrderDTO`, and similar domain classes with proper fields, types, and validation. Something needs to bridge that gap, and doing it by hand with casting and null-checking is tedious and error-prone.
+
+MapStruct is a compile-time code generator that writes this mapping code for you. You declare a mapper interface with `@Mapping` annotations describing which source fields map to which target fields, and MapStruct generates a plain Java implementation at compile time -- no reflection, no runtime overhead. The generated code is type-safe, fast, and easy to debug because you can read the generated source directly.
+
+In `fireflyframework-starter-data`, MapStruct mappers plug into the job lifecycle at the RESULT stage. After the COLLECT stage retrieves raw data from an orchestrator, the framework looks up the appropriate `JobResultMapper` from a registry, applies it, and hands your service a fully typed DTO. You define one mapper per target type, register it as a Spring bean, and the auto-discovery mechanism takes care of the rest.
+
 Complete guide to result transformation using MapStruct in `fireflyframework-starter-data`.
 
 ## Table of Contents

@@ -1,5 +1,11 @@
 # Data Transformation
 
+Data rarely arrives from external providers in exactly the shape your application needs. Field names differ between providers (one calls it `cmp_name`, another calls it `companyName`), values need normalization, and derived fields like "company size tier" must be computed from raw numbers. Handling all of this inline quickly turns your enrichment logic into a tangled mess of ad-hoc mappings.
+
+The data transformation framework in `fireflyframework-starter-data` addresses this by giving you a composable pipeline of small, single-purpose transformation steps. Each step is a function that takes data in and produces data out, and you chain them together so the output of one step feeds into the next. Because each step is a separate unit, it is easy to test in isolation, reorder, or swap out without affecting the rest of the pipeline.
+
+Transformers are fully reactive (they return `Mono<T>`), which means a step can do simple synchronous work like renaming fields or trimming strings, but it can also perform asynchronous operations like looking up a reference value from an external service. A shared `TransformContext` carries request-scoped metadata -- such as tenant ID and request ID -- through every step, so transformers can make context-aware decisions without relying on thread-local state.
+
 This document provides a comprehensive guide to the data transformation framework in `fireflyframework-starter-data`, covering the `DataTransformer` functional interface, `TransformationChain` composition, built-in transformers, and integration patterns.
 
 ## Table of Contents
