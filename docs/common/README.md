@@ -46,7 +46,7 @@ These topics are relevant whether you're building data jobs, data enrichers, or 
 - Enrichment configuration
 - EDA (Event-Driven Architecture) configuration
 - CQRS configuration
-- Transactional engine configuration
+- Orchestration engine configuration
 - Observability configuration
 - Resiliency configuration
 

@@ -60,7 +60,7 @@ The `fireflyframework-starter-data` starter is built on **Hexagonal Architecture
 │  │  │ DataJobController (REST API Port)           │   │         │
 │  │  │ JobOrchestrator (Orchestration Port)        │   │         │
 │  │  │ EventPublisher (EDA Port)                   │   │         │
-│  │  │ StepEventPublisher (SAGA Port)              │   │         │
+│  │  │ OrchestrationEventPublisher (Orchestration Port)│  │         │
 │  │  └─────────────────────────────────────────────┘   │         │
 │  │                                                    │         │
 │  │              DOMAIN CORE                           │         │
@@ -87,7 +87,7 @@ The `fireflyframework-starter-data` starter is built on **Hexagonal Architecture
 #### Outbound Ports (Driven)
 - **JobOrchestrator** - Interface for workflow orchestration
 - **EventPublisher** - Interface for event publishing
-- **StepEventPublisher** - Interface for SAGA step events
+- **OrchestrationEventPublisher** - Interface for orchestration events
 - Defines what the application needs
 - Implemented by infrastructure adapters
 
@@ -105,9 +105,7 @@ config/
 ├── EdaAutoConfiguration            # Event-driven architecture
 ├── JobOrchestrationAutoConfiguration  # Job orchestration setup
 ├── JobOrchestrationProperties      # Configuration properties
-├── StepBridgeConfiguration         # SAGA step event bridge
-├── StepEventsProperties            # Step event configuration
-└── TransactionalEngineAutoConfiguration  # SAGA support
+└── OrchestrationAutoConfiguration  # Orchestration engine support
 ```
 
 **Key Features:**
@@ -269,13 +267,13 @@ public interface JobResultMapper<S, T> {
 }
 ```
 
-### 7. Step Events Layer
+### 7. Orchestration Events Layer
 
-SAGA integration bridge:
+Orchestration engine integration:
 
 ```
-stepevents/
-└── StepEventPublisherBridge  # Bridges SAGA to EDA
+orchestration/
+└── EventGateway  # Bridges orchestration events to EDA (provided by fireflyframework-orchestration)
 ```
 
 ---
@@ -296,8 +294,8 @@ stepevents/
 │  └────────────┬───────────────────────────────┘         │
 │               │                                         │
 │  ┌────────────▼───────────────────────────────┐         │
-│  │  StepEventPublisherBridge                  │         │
-│  │  - SAGA step events                        │         │
+│  │  Orchestration EventGateway               │         │
+│  │  - Orchestration step events               │         │
 │  │  - Metadata enrichment                     │         │
 │  └────────────┬───────────────────────────────┘         │
 └───────────────┼─────────────────────────────────────────┘
@@ -325,7 +323,7 @@ stepevents/
 
 **Integration Points:**
 - Job lifecycle events published to EDA
-- SAGA step events bridged to EDA
+- Orchestration step events bridged to EDA
 - Configurable topics and routing
 - Automatic metadata enrichment
 
@@ -359,33 +357,34 @@ stepevents/
 - **Queries** - Read state (CHECK, COLLECT, RESULT)
 - Enables independent scaling of read/write operations
 
-### Integration with lib-transactional-engine
+### Integration with Orchestration Engine
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│         lib-transactional-engine                        │
+│         fireflyframework-orchestration                  │
 │                                                         │
 │  ┌────────────────────────────────────────────┐         │
-│  │  SAGA Orchestrator                         │         │
+│  │  Orchestration Engine (Saga, TCC, Workflow)│         │
 │  │  - Step execution                          │         │
 │  │  - Compensation logic                      │         │
 │  │  - Transaction coordination                │         │
 │  └────────────┬───────────────────────────────┘         │
 │               │                                         │
-│               │ Step Events                             │
+│               │ Orchestration Events                    │
 │               ▼                                         │
 │  ┌────────────────────────────────────────────┐         │
-│  │  StepEventPublisher (interface)            │         │
+│  │  OrchestrationEventPublisher (interface)   │         │
+│  │  EventGateway (bridges to EDA)             │         │
 │  └────────────────────────────────────────────┘         │
 └───────────────┼─────────────────────────────────────────┘
                 │
                 ▼
 ┌─────────────────────────────────────────────────────────┐
-│              fireflyframework-starter-data                            │
+│              fireflyframework-starter-data               │
 │                                                         │
 │  ┌────────────────────────────────────────────┐         │
-│  │  StepEventPublisherBridge                  │         │
-│  │  (implements StepEventPublisher)           │         │
+│  │  Consumes orchestration events             │         │
+│  │  (EventGateway bridges to EDA)             │         │
 │  │  - Enriches with data context              │         │
 │  │  - Routes to EDA infrastructure            │         │
 │  └────────────┬───────────────────────────────┘         │
@@ -531,7 +530,7 @@ stepevents/
 **Purpose:** Decouple abstraction from implementation
 
 **Implementation:**
-- `StepEventPublisherBridge` bridges SAGA to EDA
+- `EventGateway` bridges orchestration events to EDA
 - Allows independent evolution of both sides
 - Transparent integration
 

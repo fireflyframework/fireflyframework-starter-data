@@ -1576,7 +1576,7 @@ All jobs automatically get:
 
 ### Overview
 
-For workflows that require distributed transactions or step-level coordination, integrate with Firefly's transactional engine and event-driven architecture.
+For workflows that require distributed transactions or step-level coordination, integrate with Firefly's orchestration engine and event-driven architecture.
 
 ### Event Publishing
 

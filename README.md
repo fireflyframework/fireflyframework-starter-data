@@ -44,11 +44,11 @@ The starter features abstract controller and service base classes that eliminate
 - Job execution result persistence and audit trails
 - CQRS auto-configuration for command/query integration
 - EDA auto-configuration for event-driven data processing
-- Transactional engine integration for saga-based data flows
+- Orchestration engine integration for saga-based data flows
 - Resilience patterns with circuit breaker and retry decorators
 - Observability with Micrometer metrics and distributed tracing
 - Enrichment caching with configurable cache key generation
-- Step event bridge for transactional engine coordination
+- Orchestration engine support (Saga, TCC, Workflow)
 - Persistence auto-configuration for job results and audit entries
 
 ## Requirements

@@ -154,8 +154,8 @@ firefly:
         password: airflow
         dag-id-prefix: my_service
 
-    # Enable transactional engine (optional)
-    transactional:
+    # Enable orchestration engine (optional)
+    orchestration:
       enabled: false
 
   # Step events configuration (if using SAGAs)

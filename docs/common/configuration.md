@@ -9,7 +9,7 @@ Complete configuration reference for `fireflyframework-starter-data` starter.
 - [Job Orchestration](#job-orchestration)
 - [EDA Integration](#eda-integration)
 - [CQRS Integration](#cqrs-integration)
-- [Transactional Engine](#transactional-engine)
+- [Orchestration Engine](#orchestration-engine)
 - [Step Events](#step-events)
 - [Configuration Examples](#configuration-examples)
 
@@ -27,7 +27,7 @@ firefly:
     eda:                   # Event-Driven Architecture settings
     cqrs:                  # CQRS pattern settings
     orchestration:         # Job orchestration settings
-    transactional:         # SAGA/transactional settings
+    orchestration:         # Orchestration engine settings
   stepevents:              # Step event bridge settings
   eda:                     # fireflyframework-eda configuration
 ```
@@ -47,8 +47,8 @@ firefly:
       enabled: true        # Enable CQRS integration (default: true)
     orchestration:
       enabled: true        # Enable job orchestration (default: true)
-    transactional:
-      enabled: false       # Enable SAGA support (default: true)
+    orchestration:
+      enabled: false       # Enable orchestration engine (default: true)
 ```
 
 **Notes:**
@@ -255,32 +255,19 @@ No additional configuration needed - separation is built into the interfaces.
 
 ---
 
-## Transactional Engine
+## Orchestration Engine
 
 ### Basic Configuration
 
-```yaml
-firefly:
-  data:
-    transactional:
-      enabled: true
-```
-
-### SAGA Configuration
-
-When using SAGAs for distributed transactions:
+The `fireflyframework-orchestration` module is auto-configured via `firefly.orchestration` properties. It consolidates Saga, TCC, and Workflow patterns into a single module with its own `EventGateway` for EDA bridging.
 
 ```yaml
 firefly:
-  transactional:
-    saga:
-      enabled: true
-      default-timeout: 30m
-      max-retries: 3
-      compensation-timeout: 5m
+  orchestration:
+    enabled: true
 ```
 
-**Note:** This configuration is from `lib-transactional-engine`. See that library's documentation for complete options.
+**Note:** See the `fireflyframework-orchestration` module documentation for complete options including Saga, TCC, and Workflow configuration.
 
 ---
 
@@ -348,8 +335,8 @@ firefly:
       orchestrator-type: MOCK              # Use mock for development
       publish-job-events: true
       job-events-topic: dev-job-events
-    transactional:
-      enabled: false                       # Disable SAGAs in dev
+    orchestration:
+      enabled: false                       # Disable orchestration in dev
 
   eda:
     publishers:
@@ -397,7 +384,7 @@ firefly:
         dag-id-prefix: customer_data
         verify-ssl: true
         max-concurrent-dag-runs: 20
-    transactional:
+    orchestration:
       enabled: true
 
   stepevents:
@@ -475,7 +462,7 @@ firefly:
       enabled: true
       orchestrator-type: MOCK              # Use mock orchestrator
       publish-job-events: false            # Don't publish events
-    transactional:
+    orchestration:
       enabled: false
 
 logging:

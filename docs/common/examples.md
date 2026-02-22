@@ -492,7 +492,7 @@ public class CustomerDataEventListener {
 
 ## SAGA Integration
 
-> **Note**: This example demonstrates integration with `lib-transactional-engine` (SAGA orchestrator). The `SagaOrchestrator`, `Saga`, and `Step` classes are from that library, not from fireflyframework-starter-data. This starter provides `StepEventPublisherBridge` to publish step events to the SAGA engine.
+> **Note**: This example demonstrates integration with `fireflyframework-orchestration` (orchestration engine). The `SagaEngine`, `Saga`, and `Step` classes are from that module, not from fireflyframework-starter-data. The orchestration module provides its own `EventGateway` for EDA bridging.
 
 ### Example 8: Multi-Step Data Processing SAGA
 
@@ -501,8 +501,8 @@ public class CustomerDataEventListener {
 @Slf4j
 public class DataProcessingSagaService {
 
-    // SagaOrchestrator is from lib-transactional-engine
-    private final SagaOrchestrator sagaOrchestrator;
+    // SagaEngine is from fireflyframework-orchestration
+    private final SagaEngine sagaEngine;
     private final DataJobService dataJobService;
     // These are your application services
     private final DataTransformationService transformationService;
@@ -533,7 +533,7 @@ public class DataProcessingSagaService {
                 .build())
             .build();
 
-        return sagaOrchestrator.execute(saga)
+        return sagaEngine.execute(saga)
             .map(result -> result.getSagaId())
             .doOnSuccess(sagaId ->
                 log.info("SAGA completed successfully: {}", sagaId))
