@@ -155,9 +155,11 @@ public class DataEnricherRegistry {
         if (enrichers == null || enrichers.isEmpty()) {
             return Optional.empty();
         }
-        // Return the enricher with highest priority
+        // Return the enricher with highest priority, breaking ties by provider name for determinism
         return enrichers.stream()
-                .max(Comparator.comparingInt(DataEnricher::getPriority));
+                .max(Comparator.comparingInt(DataEnricher<?, ?, ?>::getPriority)
+                        .thenComparing(e -> e.getProviderName() != null ? e.getProviderName() : "",
+                                Comparator.naturalOrder()));
     }
 
     /**
@@ -286,7 +288,9 @@ public class DataEnricherRegistry {
      */
     public Optional<DataEnricher<?, ?, ?>> getEnricherForTypeAndTenant(String enrichmentType, UUID tenantId) {
         return getAllEnrichersForTypeAndTenant(enrichmentType, tenantId).stream()
-                .max(Comparator.comparingInt(DataEnricher::getPriority));
+                .max(Comparator.comparingInt(DataEnricher<?, ?, ?>::getPriority)
+                        .thenComparing(e -> e.getProviderName() != null ? e.getProviderName() : "",
+                                Comparator.naturalOrder()));
     }
 }
 

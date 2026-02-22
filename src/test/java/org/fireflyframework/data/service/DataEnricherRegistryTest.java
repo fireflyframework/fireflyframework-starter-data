@@ -22,8 +22,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import org.fireflyframework.data.enrichment.EnricherMetadataReader;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.lenient;
@@ -320,6 +323,66 @@ class DataEnricherRegistryTest {
 
         // Then
         assertThat(count).isEqualTo(0);
+    }
+
+    @Test
+    void getEnricherForType_shouldUseTieBreakerWhenPrioritiesAreEqual() {
+        // Given - two enrichers with same priority but different provider names
+        @SuppressWarnings("unchecked")
+        DataEnricher<Object, Object, Object> enricherA =
+                (DataEnricher<Object, Object, Object>) org.mockito.Mockito.mock(DataEnricher.class);
+        @SuppressWarnings("unchecked")
+        DataEnricher<Object, Object, Object> enricherB =
+                (DataEnricher<Object, Object, Object>) org.mockito.Mockito.mock(DataEnricher.class);
+
+        lenient().when(enricherA.getProviderName()).thenReturn("ProviderA");
+        lenient().when(enricherA.getSupportedEnrichmentTypes()).thenReturn(List.of("shared-type"));
+        lenient().when(enricherA.getPriority()).thenReturn(50);
+
+        lenient().when(enricherB.getProviderName()).thenReturn("ProviderB");
+        lenient().when(enricherB.getSupportedEnrichmentTypes()).thenReturn(List.of("shared-type"));
+        lenient().when(enricherB.getPriority()).thenReturn(50);
+
+        DataEnricherRegistry tieRegistry = new DataEnricherRegistry(List.of(enricherB, enricherA));
+
+        // When
+        Optional<DataEnricher<?, ?, ?>> result = tieRegistry.getEnricherForType("shared-type");
+
+        // Then - should deterministically return "ProviderB" (alphabetically last wins with naturalOrder max)
+        assertThat(result).isPresent();
+        assertThat(result.get().getProviderName()).isEqualTo("ProviderB");
+    }
+
+    @Test
+    void getEnricherForTypeAndTenant_shouldUseTieBreakerWhenPrioritiesAreEqual() {
+        // Given - two enrichers with same priority but different provider names
+        @SuppressWarnings("unchecked")
+        DataEnricher<Object, Object, Object> enricherA =
+                (DataEnricher<Object, Object, Object>) org.mockito.Mockito.mock(DataEnricher.class);
+        @SuppressWarnings("unchecked")
+        DataEnricher<Object, Object, Object> enricherB =
+                (DataEnricher<Object, Object, Object>) org.mockito.Mockito.mock(DataEnricher.class);
+
+        lenient().when(enricherA.getProviderName()).thenReturn("ProviderA");
+        lenient().when(enricherA.getSupportedEnrichmentTypes()).thenReturn(List.of("shared-type"));
+        lenient().when(enricherA.getPriority()).thenReturn(50);
+
+        lenient().when(enricherB.getProviderName()).thenReturn("ProviderB");
+        lenient().when(enricherB.getSupportedEnrichmentTypes()).thenReturn(List.of("shared-type"));
+        lenient().when(enricherB.getPriority()).thenReturn(50);
+
+        DataEnricherRegistry tieRegistry = new DataEnricherRegistry(List.of(enricherB, enricherA));
+
+        // Mocks without @EnricherMetadata fall back to GLOBAL_TENANT_ID
+        UUID globalTenantId = EnricherMetadataReader.GLOBAL_TENANT_ID;
+
+        // When
+        Optional<DataEnricher<?, ?, ?>> result =
+                tieRegistry.getEnricherForTypeAndTenant("shared-type", globalTenantId);
+
+        // Then - should deterministically return "ProviderB" (alphabetically last wins with naturalOrder max)
+        assertThat(result).isPresent();
+        assertThat(result.get().getProviderName()).isEqualTo("ProviderB");
     }
 }
 
