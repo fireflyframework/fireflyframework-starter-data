@@ -18,7 +18,6 @@ package org.fireflyframework.data.integration;
 
 import org.fireflyframework.data.config.DataConfiguration;
 import org.fireflyframework.data.config.JobOrchestrationProperties;
-import org.fireflyframework.data.config.StepEventsProperties;
 import org.fireflyframework.data.event.JobEventPublisher;
 import org.fireflyframework.data.health.JobOrchestratorHealthIndicator;
 import org.fireflyframework.data.mapper.JobResultMapperRegistry;
@@ -67,20 +66,16 @@ import static org.junit.jupiter.api.Assertions.*;
         "firefly.data.orchestration.observability.metric-prefix=test.firefly.data.job",
         "firefly.data.orchestration.health-check.enabled=true",
         "firefly.data.orchestration.health-check.timeout=PT5S",
-        "firefly.data.stepevents.enabled=true",
-        "firefly.data.stepevents.topic=test-step-events",
-        "firefly.data.stepevents.include-job-context=true",
         "firefly.data.eda.enabled=false",
         "firefly.data.cqrs.enabled=false",
-        "firefly.data.transactional.enabled=false"
+        "firefly.data.orchestration-engine.enabled=false"
 })
 class AutoConfigurationIntegrationTest {
 
     @Configuration
     @EnableConfigurationProperties({
             JobOrchestrationProperties.class,
-            DataConfiguration.class,
-            StepEventsProperties.class
+            DataConfiguration.class
     })
     static class TestConfig {
 
@@ -144,9 +139,6 @@ class AutoConfigurationIntegrationTest {
     @Autowired(required = false)
     private DataConfiguration dataConfiguration;
 
-    @Autowired(required = false)
-    private StepEventsProperties stepEventsProperties;
-
     @Test
     void contextLoads() {
         assertNotNull(applicationContext);
@@ -189,19 +181,11 @@ class AutoConfigurationIntegrationTest {
         // EDA and CQRS are disabled in this test to avoid bean conflicts
         assertFalse(dataConfiguration.getEda().isEnabled());
         assertFalse(dataConfiguration.getCqrs().isEnabled());
-        assertFalse(dataConfiguration.getTransactional().isEnabled());
+        assertFalse(dataConfiguration.getOrchestrationEngine().isEnabled());
 
         // Orchestration is nested in dataConfiguration
         assertNotNull(dataConfiguration.getOrchestration());
         assertTrue(dataConfiguration.getOrchestration().isEnabled());
-    }
-
-    @Test
-    void stepEventsProperties_ShouldBeLoadedWithCorrectValues() {
-        assertNotNull(stepEventsProperties);
-        assertTrue(stepEventsProperties.isEnabled());
-        assertEquals("test-step-events", stepEventsProperties.getTopic());
-        assertTrue(stepEventsProperties.isIncludeJobContext());
     }
 
     @Test

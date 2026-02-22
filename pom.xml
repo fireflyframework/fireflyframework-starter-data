@@ -119,10 +119,10 @@
             <version>${project.version}</version>
         </dependency>
 
-        <!-- Transactional Engine -->
+        <!-- Orchestration Engine (Saga, TCC, Workflow) -->
         <dependency>
             <groupId>org.fireflyframework</groupId>
-            <artifactId>fireflyframework-transactional-engine</artifactId>
+            <artifactId>fireflyframework-orchestration</artifactId>
             <version>${project.version}</version>
             <optional>true</optional>
         </dependency>

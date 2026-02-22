@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
     "firefly.data.eda.enabled=false",
     "firefly.data.cqrs.enabled=true",
     "firefly.data.orchestration.enabled=true",
-    "firefly.data.transactional.enabled=false"
+    "firefly.data.orchestration-engine.enabled=false"
 })
 class DataConfigurationTest {
 
@@ -57,9 +57,9 @@ class DataConfigurationTest {
         assertNotNull(dataConfiguration.getOrchestration());
         assertTrue(dataConfiguration.getOrchestration().isEnabled());
         
-        // Test transactional config
-        assertNotNull(dataConfiguration.getTransactional());
-        assertFalse(dataConfiguration.getTransactional().isEnabled());
+        // Test orchestration engine config
+        assertNotNull(dataConfiguration.getOrchestrationEngine());
+        assertFalse(dataConfiguration.getOrchestrationEngine().isEnabled());
     }
 
     @Test
@@ -70,6 +70,6 @@ class DataConfigurationTest {
         assertTrue(defaultConfig.getEda().isEnabled());
         assertTrue(defaultConfig.getCqrs().isEnabled());
         assertTrue(defaultConfig.getOrchestration().isEnabled());
-        assertTrue(defaultConfig.getTransactional().isEnabled());
+        assertTrue(defaultConfig.getOrchestrationEngine().isEnabled());
     }
 }

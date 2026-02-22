@@ -36,7 +36,6 @@
     <logger name="org.fireflyframework.data.controller.AbstractDataJobController" level="OFF" />
     <logger name="org.fireflyframework.data.controller.AbstractSyncDataJobController" level="OFF" />
     <logger name="org.fireflyframework.data.controller.AbstractDataEnricherController" level="OFF" />
-    <logger name="org.fireflyframework.data.stepevents.StepEventPublisherBridge" level="OFF" />
     <logger name="org.fireflyframework.data.service.TypedDataEnricher" level="OFF" />
     <logger name="org.fireflyframework.data.service.DataEnricherRegistry" level="OFF" />
     <logger name="org.fireflyframework.data.service.DataJobDiscoveryService" level="OFF" />

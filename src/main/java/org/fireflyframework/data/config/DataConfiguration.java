@@ -49,10 +49,10 @@ public class DataConfiguration {
     private JobOrchestrationProperties orchestration = new JobOrchestrationProperties();
     
     /**
-     * SAGA/transactional settings.
+     * Orchestration engine settings (Saga, TCC, Workflow).
      */
     @NestedConfigurationProperty
-    private TransactionalConfig transactional = new TransactionalConfig();
+    private OrchestrationConfig orchestrationEngine = new OrchestrationConfig();
     
     @Data
     public static class EdaConfig {
@@ -71,9 +71,9 @@ public class DataConfiguration {
     }
     
     @Data
-    public static class TransactionalConfig {
+    public static class OrchestrationConfig {
         /**
-         * Enable SAGA support (default: true).
+         * Enable orchestration engine support (default: true).
          */
         private boolean enabled = true;
     }
