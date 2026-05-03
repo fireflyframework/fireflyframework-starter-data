@@ -243,4 +243,4 @@ See [Architecture](common/architecture.md) for detailed design patterns and comp
 
 ---
 
-Copyright 2024-2026 Firefly Software Solutions Inc. All rights reserved.
+Copyright 2024-2026 Firefly Software Foundation. All rights reserved.
