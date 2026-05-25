@@ -5,7 +5,7 @@ description = "GenAI bridge for fireflyframework-starter-data — tools, pipelin
 requires-python = ">=3.13"
 license = "Apache-2.0"
 authors = [
-    { name = "Firefly Software Solutions Inc" }
+    { name = "Firefly Software Foundation" }
 ]
 dependencies = [
     "fireflyframework-genai>=26.02.07",
